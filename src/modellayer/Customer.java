@@ -10,11 +10,10 @@ public class Customer extends Person{
 		super();
 	}
 
-	public Customer(String name, String phone, String email, String address, String zipCode, Location location) {
+	public Customer(String name, String phone, String email, String address, String zipCode) {
 		super(name, phone, email);
 		this.address = address;
 		this.zipCode = zipCode;
-		this.location = location;
 	}
 
 	public String getAddress() {
