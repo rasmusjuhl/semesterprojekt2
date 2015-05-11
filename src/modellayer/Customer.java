@@ -2,24 +2,39 @@ package modellayer;
 
 public class Customer extends Person{
 
-	private String password;
+	private String address;
+	private Location location;
 	
 	public Customer() {
-		
-	}
-
-	public Customer(String password) {
 		super();
-		this.password = password;
 	}
 
-	public String getPassword() {
-		return password;
+	public Customer(String address, Location location) {
+		super();
+		this.address = address;
+		this.location = location;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public String getAddress() {
+		return address;
 	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	
+
+	
+	
 	
 	
 
