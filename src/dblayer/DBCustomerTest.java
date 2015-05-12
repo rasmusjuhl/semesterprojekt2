@@ -12,8 +12,6 @@ public class DBCustomerTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		DBCustomer dbCus = new DBCustomer();
-		Customer cus = new Customer("Hans Hansen", "123", "hans@hansen.dk", "Sofiendalsvej 60", "9000");
 		
 	}
 
@@ -23,15 +21,34 @@ public class DBCustomerTest {
 
 	@Before
 	public void setUp() throws Exception {
+//		DBCustomer dbCus = new DBCustomer();
+//		Customer cus = new Customer("Hans Hansen", "123", "hans@hansen.dk", "Sofiendalsvej 60", "9000");
+//		dbCus.insertCustomer(cus);
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		
 	}
 
 	@Test
 	public void testInsertCustomer() {
-		fail("Not yet implemented");
+		DBCustomer dbCus = new DBCustomer();
+		Customer cus = new Customer("Hans Hansen", "123", "hans@hansen.dk", "Sofiendalsvej 60", "9000");
+		try {
+			if(dbCus.insertCustomer(cus) == 1)
+			{
+				System.out.println("succes");
+			}
+			else
+			{
+				fail("fail");
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Test
