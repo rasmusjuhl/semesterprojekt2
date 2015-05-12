@@ -1,19 +1,18 @@
 package modellayer;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Route {
 	
 	private String date;
-	private List<Step> routeSteps;
+	private ArrayList<Vertex> edges;
 
 	public Route() {
 	}
 
-	public Route(String date, List<Step> routeSteps) {
-		super();
+	public Route(String date, ArrayList<Vertex> edges) {
 		this.date = date;
-		this.routeSteps = routeSteps;
+		this.edges = edges;
 	}
 
 	public String getDate() {
@@ -24,12 +23,12 @@ public class Route {
 		this.date = date;
 	}
 
-	public List<Step> getRouteSteps() {
-		return routeSteps;
+	public ArrayList<Vertex> getEdges() {
+		return edges;
 	}
 
-	public void setRouteSteps(List<Step> routeSteps) {
-		this.routeSteps = routeSteps;
+	public void setEdges(ArrayList<Vertex> edges) {
+		this.edges = edges;
 	}
 
 	
