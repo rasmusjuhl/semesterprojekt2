@@ -2,6 +2,7 @@ package dblayer;
 import modellayer.*;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DBCustomer {
 
@@ -74,7 +75,7 @@ public class DBCustomer {
 
 				String zip = rs.getString("zipCode");
 				cusObj.setZipCode(zip);	
-//				cusObj.setLocation(new DBLocation().findLocation(zip));
+				cusObj.setLocation(new DBLocation().findLocation(zip));
 			}
 		}
 		catch(SQLException e)
@@ -83,6 +84,47 @@ public class DBCustomer {
 		}		
 		return cusObj;
 	}
+	
+	//find all customers
+	public ArrayList<Customer> getAllCustomers()
+	{
+		Customer cusObj = new Customer();
+		ResultSet rs = null;
+		ArrayList<Customer> list = new ArrayList<Customer>();
+		PreparedStatement findAll;
+		try 
+		{
+			findAll = con.prepareStatement("SELECT * FROM users");
+			findAll.setQueryTimeout(5);
+			rs = findAll.executeQuery();
+			findAll.close();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		try {
+			while(rs.next())
+			{
+				cusObj.setName(rs.getString("name"));
+				cusObj.setAddress(rs.getString("address"));
+				cusObj.setEmail(rs.getString("email"));
+				cusObj.setPhone(rs.getString("phoneNo"));
+
+				String zip = rs.getString("zipCode");
+				cusObj.setZipCode(zip);	
+				cusObj.setLocation(new DBLocation().findLocation(zip));
+				list.add(cusObj);
+			}
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return list;		
+	}
+	
 
 	public int updateCustomer(Customer cus)
 	{
