@@ -3,16 +3,17 @@ package modellayer;
 public class Customer extends Person{
 
 	private String address;
+	private String zipCode;
 	private Location location;
 	
 	public Customer() {
 		super();
 	}
 
-	public Customer(String address, Location location) {
-		super();
+	public Customer(String name, String phone, String email, String address, String zipCode) {
+		super(name, phone, email);
 		this.address = address;
-		this.location = location;
+		this.zipCode = zipCode;
 	}
 
 	public String getAddress() {
@@ -21,6 +22,14 @@ public class Customer extends Person{
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	
+	public String getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
 	}
 
 	public Location getLocation() {

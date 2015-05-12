@@ -10,8 +10,8 @@ public class User extends Person{
 	}
 
 	
-	public User(String password) {
-		super();
+	public User(String name, String phone, String email, String password) {
+		super(name, phone, email);
 		this.password = password;
 	}
 
