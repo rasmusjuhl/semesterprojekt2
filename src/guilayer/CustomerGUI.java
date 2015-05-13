@@ -8,6 +8,7 @@ import java.awt.EventQueue;
 import java.awt.Window;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
@@ -52,12 +53,12 @@ public class CustomerGUI extends JFrame {
 	private DefaultTableModel model;
 	private JPanel panelRet;
 	private JButton btnRetKunde;
-	private JButton btnSletKunde;
 	private DefaultTableModel modelRet;
 	private JTable tableRet;
 	private JButton btnRet;
 	private JPanel panelOpret;
 	private JScrollPane scrollPane;
+	private JButton btnSlet;
 
 	/**
 	 * Launch the application.
@@ -113,7 +114,7 @@ public class CustomerGUI extends JFrame {
 		btnFindKunde.setBounds(10, 72, 146, 50);
 		contentPane.add(btnFindKunde);	
 		
-		btnRetKunde = new JButton("Ret kunde");
+		btnRetKunde = new JButton("Ret/slet kunde");
 		btnRetKunde.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				panelRetKunde();
@@ -123,10 +124,6 @@ public class CustomerGUI extends JFrame {
 		});
 		btnRetKunde.setBounds(10, 133, 146, 50);
 		contentPane.add(btnRetKunde);
-		
-		btnSletKunde = new JButton("Slet kunde");
-		btnSletKunde.setBounds(10, 194, 146, 50);
-		contentPane.add(btnSletKunde);
 		
 		
 		//START Find kunde components
@@ -239,6 +236,23 @@ public class CustomerGUI extends JFrame {
 		panelOpret.add(txtEmail);
 		
 		btnOpret = new JButton("Opret");
+		btnOpret.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String name = txtNavn.getText();
+				String phone = txtTelefon.getText();
+				String email = txtEmail.getText();
+				String address = txtAdresse.getText();
+				String zipCode = txtPostnr.getText();						
+				try 
+				{
+					cusCtr.insertNewCustomer(name, phone, email, address, zipCode);
+				} 
+				catch (Exception e1) 
+				{
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnOpret.setBounds(10, 136, 89, 23);
 		panelOpret.add(btnOpret);		
 		//END Opret kunde panel
@@ -281,6 +295,24 @@ public class CustomerGUI extends JFrame {
 		});
 		btnRet.setBounds(10, 341, 89, 23);
 		panelRet.add(btnRet);
+		
+		btnSlet = new JButton("Slet");
+		btnSlet.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final JFrame parent = new JFrame();
+				int row = tableRet.getSelectedRow();
+				String slet = "Slet kunde: " + (String) tableRet.getValueAt(row, 0);
+				int valg = JOptionPane.showConfirmDialog(parent, "Er du sikker?", slet, JOptionPane.YES_NO_OPTION);
+				if(valg == 0)
+				{
+					String phone = (String) tableRet.getValueAt(row, 4);
+					cusCtr.deleteCustomer(phone);
+					sletTabel(modelRet);
+				}
+			}
+		});
+		btnSlet.setBounds(109, 341, 89, 23);
+		panelRet.add(btnSlet);
 		//END Ret kunde panel
 		
 		
