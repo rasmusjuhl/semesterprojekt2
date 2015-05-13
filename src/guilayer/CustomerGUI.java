@@ -1,11 +1,8 @@
 package guilayer;
 import ctrlayer.*;
-import dblayer.*;
 import modellayer.*;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.awt.Window;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -118,8 +115,7 @@ public class CustomerGUI extends JFrame {
 		btnRetKunde.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				panelRetKunde();
-				findAllCustomers(modelRet);
-				
+				findAllCustomers(modelRet);				
 			}
 		});
 		btnRetKunde.setBounds(10, 133, 146, 50);
@@ -238,19 +234,7 @@ public class CustomerGUI extends JFrame {
 		btnOpret = new JButton("Opret");
 		btnOpret.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String name = txtNavn.getText();
-				String phone = txtTelefon.getText();
-				String email = txtEmail.getText();
-				String address = txtAdresse.getText();
-				String zipCode = txtPostnr.getText();						
-				try 
-				{
-					cusCtr.insertNewCustomer(name, phone, email, address, zipCode);
-				} 
-				catch (Exception e1) 
-				{
-					e1.printStackTrace();
-				}
+				insertCustomer();
 			}
 		});
 		btnOpret.setBounds(10, 136, 89, 23);
@@ -283,14 +267,7 @@ public class CustomerGUI extends JFrame {
 		btnRet = new JButton("Ret");
 		btnRet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int row = tableRet.getSelectedRow();
-				String name = (String) tableRet.getValueAt(row, 0);
-				String phone = (String) tableRet.getValueAt(row, 4);
-				String email  = (String) tableRet.getValueAt(row, 5);
-				String address =(String) tableRet.getValueAt(row, 1);
-				String zipCode = (String) tableRet.getValueAt(row, 2);
-				
-				cusCtr.updateCustomer(name, phone, email, address, zipCode);
+				updateCustomer();
 			}
 		});
 		btnRet.setBounds(10, 341, 89, 23);
@@ -299,16 +276,7 @@ public class CustomerGUI extends JFrame {
 		btnSlet = new JButton("Slet");
 		btnSlet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				final JFrame parent = new JFrame();
-				int row = tableRet.getSelectedRow();
-				String slet = "Slet kunde: " + (String) tableRet.getValueAt(row, 0);
-				int valg = JOptionPane.showConfirmDialog(parent, "Er du sikker?", slet, JOptionPane.YES_NO_OPTION);
-				if(valg == 0)
-				{
-					String phone = (String) tableRet.getValueAt(row, 4);
-					cusCtr.deleteCustomer(phone);
-					sletTabel(modelRet);
-				}
+				deleteCustomer();
 			}
 		});
 		btnSlet.setBounds(109, 341, 89, 23);
@@ -380,10 +348,47 @@ public class CustomerGUI extends JFrame {
 		}	
 	}
 	
+	private void updateCustomer()
+	{
+		int row = tableRet.getSelectedRow();
+		String name = (String) tableRet.getValueAt(row, 0);
+		String phone = (String) tableRet.getValueAt(row, 4);
+		String email  = (String) tableRet.getValueAt(row, 5);
+		String address =(String) tableRet.getValueAt(row, 1);
+		String zipCode = (String) tableRet.getValueAt(row, 2);		
+		cusCtr.updateCustomer(name, phone, email, address, zipCode);
+	}
 	
+	private void deleteCustomer()
+	{
+		final JFrame parent = new JFrame();
+		int row = tableRet.getSelectedRow();
+		String slet = "Slet kunde: " + (String) tableRet.getValueAt(row, 0);
+		int valg = JOptionPane.showConfirmDialog(parent, "Er du sikker?", slet, JOptionPane.YES_NO_OPTION);
+		if(valg == 0)
+		{
+			String phone = (String) tableRet.getValueAt(row, 4);
+			cusCtr.deleteCustomer(phone);
+			sletTabel(modelRet);
+		}
+	}
 	
-	
-	
+	private void insertCustomer()
+	{
+		String name = txtNavn.getText();
+		String phone = txtTelefon.getText();
+		String email = txtEmail.getText();
+		String address = txtAdresse.getText();
+		String zipCode = txtPostnr.getText();						
+		try 
+		{
+			cusCtr.insertNewCustomer(name, phone, email, address, zipCode);
+		} 
+		catch (Exception e1) 
+		{
+			e1.printStackTrace();
+		}
+	}
 	
 	
 	
