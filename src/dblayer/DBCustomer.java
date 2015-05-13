@@ -86,14 +86,13 @@ public class DBCustomer {
 	
 	//find all customers
 	public ArrayList<Customer> getAllCustomers()
-	{
-		Customer cusObj = new Customer();
+	{		
 		ResultSet rs = null;
 		ArrayList<Customer> list = new ArrayList<Customer>();
 		PreparedStatement findAll;
 		try 
 		{
-			findAll = con.prepareStatement("SELECT * FROM users");
+			findAll = con.prepareStatement("SELECT * FROM customer");
 			findAll.setQueryTimeout(5);
 			rs = findAll.executeQuery();
 		} 
@@ -104,6 +103,7 @@ public class DBCustomer {
 		try {
 			while(rs.next())
 			{
+				Customer cusObj = new Customer();
 				cusObj.setName(rs.getString("name"));
 				cusObj.setAddress(rs.getString("address"));
 				cusObj.setEmail(rs.getString("email"));
