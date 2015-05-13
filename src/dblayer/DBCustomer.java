@@ -131,7 +131,7 @@ public class DBCustomer {
 		try
 		{
 			update = con.prepareStatement("UPDATE customer SET name = ?, address = ?, zipCode = ?,"
-					+ " phoneNo = ?, email = ?, WHERE phoneNo = ? ");
+					+ " phoneNo = ?, email = ? WHERE phoneNo = ? ");
 			update.setString(1, cus.getName());
 			update.setString(2, cus.getAddress());
 			update.setString(3, cus.getZipCode());
