@@ -5,6 +5,7 @@ import modellayer.*;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Window;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -47,9 +48,16 @@ public class CustomerGUI extends JFrame {
 	private JTextField txtFindTelefon;
 	private JButton btnFind;
 	private JTable table;
-	private JScrollPane scrollPane;
+	private JScrollPane scrollPaneRet;
 	private DefaultTableModel model;
+	private JPanel panelRet;
+	private JButton btnRetKunde;
+	private JButton btnSletKunde;
+	private DefaultTableModel modelRet;
+	private JTable tableRet;
+	private JButton btnRet;
 	private JPanel panelOpret;
+	private JScrollPane scrollPane;
 
 	/**
 	 * Launch the application.
@@ -105,6 +113,21 @@ public class CustomerGUI extends JFrame {
 		btnFindKunde.setBounds(10, 72, 146, 50);
 		contentPane.add(btnFindKunde);	
 		
+		btnRetKunde = new JButton("Ret kunde");
+		btnRetKunde.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelRetKunde();
+				findAllCustomers(modelRet);
+				
+			}
+		});
+		btnRetKunde.setBounds(10, 133, 146, 50);
+		contentPane.add(btnRetKunde);
+		
+		btnSletKunde = new JButton("Slet kunde");
+		btnSletKunde.setBounds(10, 194, 146, 50);
+		contentPane.add(btnSletKunde);
+		
 		
 		//START Find kunde components
 		panelFind = new JPanel();
@@ -125,7 +148,7 @@ public class CustomerGUI extends JFrame {
 		btnFind = new JButton("Find");
 		btnFind.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				findCustomer();
+				findCustomer(model);
 			}
 		});
 		btnFind.setBounds(10, 36, 100, 23);
@@ -150,7 +173,7 @@ public class CustomerGUI extends JFrame {
 		JButton btnFindAlle = new JButton("Find alle");
 		btnFindAlle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				findAllCustomers();
+				findAllCustomers(model);
 			}
 		});
 		btnFindAlle.setBounds(120, 36, 89, 23);
@@ -163,8 +186,7 @@ public class CustomerGUI extends JFrame {
 		panelOpret.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panelOpret.setBounds(166, 11, 836, 600);
 		contentPane.add(panelOpret);
-		panelOpret.setLayout(null);
-		
+		panelOpret.setLayout(null);		
 		
 		lblNavn = new JLabel("Navn");
 		lblNavn.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -218,17 +240,64 @@ public class CustomerGUI extends JFrame {
 		
 		btnOpret = new JButton("Opret");
 		btnOpret.setBounds(10, 136, 89, 23);
-		panelOpret.add(btnOpret);
-			
-		panelOpret.setVisible(false);
-
+		panelOpret.add(btnOpret);		
 		//END Opret kunde panel
 		
+		//START Ret kunde panel
+		panelRet = new JPanel();
+		panelRet.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panelRet.setBounds(166, 11, 836, 600);
+		contentPane.add(panelRet);
+		panelRet.setLayout(null);	
+		
+		scrollPaneRet = new JScrollPane();
+		scrollPaneRet.setBounds(10, 11, 816, 319);
+		panelRet.add(scrollPaneRet);
+		
+		modelRet = new DefaultTableModel(new Object[][] {},new String[] {"Navn", "Adresse", "Postnr", "By", "Telefon", "Email"});
+		tableRet = new JTable(modelRet)
+		{
+			Class[] columnTypes = new Class[] {
+					String.class, String.class, String.class, String.class, String.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		};
+		scrollPaneRet.setViewportView(tableRet);
+		
+		btnRet = new JButton("Ret");
+		btnRet.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = tableRet.getSelectedRow();
+				String name = (String) tableRet.getValueAt(row, 0);
+				String phone = (String) tableRet.getValueAt(row, 4);
+				String email  = (String) tableRet.getValueAt(row, 5);
+				String address =(String) tableRet.getValueAt(row, 1);
+				String zipCode = (String) tableRet.getValueAt(row, 2);
+				
+				cusCtr.updateCustomer(name, phone, email, address, zipCode);
+			}
+		});
+		btnRet.setBounds(10, 341, 89, 23);
+		panelRet.add(btnRet);
+		//END Ret kunde panel
+		
+		
+		
+		
+		
+		
+		
+		panelRet.setVisible(false);
+		panelOpret.setVisible(false);
+		panelFind.setVisible(false);
 	}
 	
 	
 	public void panelOpretKunde()
 	{	
+		panelRet.setVisible(false);
 		panelFind.setVisible(false);
 		panelOpret.setVisible(true);
 		
@@ -236,31 +305,48 @@ public class CustomerGUI extends JFrame {
 	
 	public void panelFindKunde()
 	{
+		panelRet.setVisible(false);
 		panelOpret.setVisible(false);
 		panelFind.setVisible(true);
 	}
 	
-	public void findCustomer()
+	private void panelRetKunde()
 	{
+		panelOpret.setVisible(false);
+		panelFind.setVisible(false);
+		panelRet.setVisible(true);
+	}
+	
+	
+	public void findCustomer(DefaultTableModel dmodel)
+	{
+		sletTabel(dmodel);
 		String phone = txtFindTelefon.getText();
 		Customer cus = cusCtr.findByPhoneNo(phone);
 		
-		model.addRow(new Object[]{cus.getName(),cus.getAddress(),cus.getZipCode(),cus.getLocation().getCity(),cus.getPhone(),cus.getEmail()});
+		dmodel.addRow(new Object[]{cus.getName(),cus.getAddress(),cus.getZipCode(),cus.getLocation().getCity(),cus.getPhone(),cus.getEmail()});
 	}
 	
-	public void findAllCustomers()
+	public void findAllCustomers(DefaultTableModel dmodel)
 	{
+		sletTabel(dmodel);
 		ArrayList<Customer> list = new ArrayList<Customer>();
 		list = cusCtr.findAllCustomers();
 		for(int i = 0; i < list.size(); i++)
 		{
-			model.addRow(new Object[]{list.get(i).getName(), list.get(i).getAddress(), list.get(i).getZipCode(),
+			dmodel.addRow(new Object[]{list.get(i).getName(), list.get(i).getAddress(), list.get(i).getZipCode(),
 						 list.get(i).getLocation().getCity(), list.get(i).getPhone(), list.get(i).getEmail()});
 		}
 		
 	}
 	
-	
+	private void sletTabel(DefaultTableModel dmodel)
+	{
+		int rowCount = dmodel.getRowCount();
+		for (int i = rowCount - 1; i >= 0; i--) {
+			dmodel.removeRow(i);
+		}	
+	}
 	
 	
 	
