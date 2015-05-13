@@ -54,11 +54,10 @@ public class DBCustomer {
 		PreparedStatement find;
 		try
 		{
-			find = con.prepareStatement("SELECT * FROM users WHERE phoneNo = ?");
+			find = con.prepareStatement("SELECT * FROM customer WHERE phoneNo = ?");
 			find.setString(1, phone);
 			find.setQueryTimeout(5);
 			rs = find.executeQuery();
-			find.close();
 		}
 		catch(SQLException e)
 		{
@@ -97,7 +96,6 @@ public class DBCustomer {
 			findAll = con.prepareStatement("SELECT * FROM users");
 			findAll.setQueryTimeout(5);
 			rs = findAll.executeQuery();
-			findAll.close();
 		} 
 		catch (SQLException e) 
 		{
