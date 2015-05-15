@@ -54,11 +54,10 @@ public class DBCustomer {
 		PreparedStatement find;
 		try
 		{
-			find = con.prepareStatement("SELECT * FROM users WHERE phoneNo = ?");
+			find = con.prepareStatement("SELECT * FROM customer WHERE phoneNo = ?");
 			find.setString(1, phone);
 			find.setQueryTimeout(5);
 			rs = find.executeQuery();
-			find.close();
 		}
 		catch(SQLException e)
 		{
@@ -87,17 +86,15 @@ public class DBCustomer {
 	
 	//find all customers
 	public ArrayList<Customer> getAllCustomers()
-	{
-		Customer cusObj = new Customer();
+	{		
 		ResultSet rs = null;
 		ArrayList<Customer> list = new ArrayList<Customer>();
 		PreparedStatement findAll;
 		try 
 		{
-			findAll = con.prepareStatement("SELECT * FROM users");
+			findAll = con.prepareStatement("SELECT * FROM customer");
 			findAll.setQueryTimeout(5);
 			rs = findAll.executeQuery();
-			findAll.close();
 		} 
 		catch (SQLException e) 
 		{
@@ -106,6 +103,7 @@ public class DBCustomer {
 		try {
 			while(rs.next())
 			{
+				Customer cusObj = new Customer();
 				cusObj.setName(rs.getString("name"));
 				cusObj.setAddress(rs.getString("address"));
 				cusObj.setEmail(rs.getString("email"));
@@ -133,7 +131,7 @@ public class DBCustomer {
 		try
 		{
 			update = con.prepareStatement("UPDATE customer SET name = ?, address = ?, zipCode = ?,"
-					+ " phoneNo = ?, email = ?, WHERE phoneNo = ? ");
+					+ " phoneNo = ?, email = ? WHERE phoneNo = ? ");
 			update.setString(1, cus.getName());
 			update.setString(2, cus.getAddress());
 			update.setString(3, cus.getZipCode());
