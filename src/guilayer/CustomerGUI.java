@@ -256,6 +256,7 @@ public class CustomerGUI extends JFrame {
 		btnOpret.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				insertCustomer();
+				clearFieldsOpret();
 			}
 		});
 		btnOpret.setBounds(10, 136, 89, 23);
@@ -268,7 +269,7 @@ public class CustomerGUI extends JFrame {
 		lblBy.setVisible(false);
 		//END Opret kunde panel
 		
-		//START Ret kunde panel
+		//START Ret/slet kunde panel
 		panelRet = new JPanel();
 		panelRet.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panelRet.setBounds(166, 11, 836, 600);
@@ -308,7 +309,7 @@ public class CustomerGUI extends JFrame {
 		});
 		btnSlet.setBounds(109, 341, 89, 23);
 		panelRet.add(btnSlet);
-		//END Ret kunde panel
+		//END Ret/slet kunde panel
 		
 		
 		
@@ -425,6 +426,16 @@ public class CustomerGUI extends JFrame {
 		String city = loc.getCity();
 		lblBy.setText(city);
 		lblBy.setVisible(true);
+	}
+	
+	private void clearFieldsOpret()
+	{
+		txtNavn.setText("");
+		txtAdresse.setText("");
+		txtPostnr.setText("");
+		txtEmail.setText("");
+		txtTelefon.setText("");
+		lblBy.setText("");
 	}
 	
 	
