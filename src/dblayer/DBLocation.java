@@ -24,7 +24,7 @@ public class DBLocation {
 		Location locObj = new Location();
 		String query = buildQuery(wClause);
 		
-		System.out.println(query);
+//		System.out.println(query);
 		
 		try
 		{
