@@ -62,6 +62,7 @@ public class CustomerGUI extends JFrame {
 	private JScrollPane scrollPane;
 	private JButton btnSlet;
 	private JLabel lblBy;
+	private JLabel lblKundeOprettet;
 
 	/**
 	 * Launch the application.
@@ -103,6 +104,7 @@ public class CustomerGUI extends JFrame {
 		btnOpretKunde.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				panelOpretKunde();
+				
 			}
 		});
 		btnOpretKunde.setBounds(10, 11, 146, 50);
@@ -267,6 +269,13 @@ public class CustomerGUI extends JFrame {
 		lblBy.setBounds(240, 62, 102, 14);
 		panelOpret.add(lblBy);
 		lblBy.setVisible(false);
+		
+		lblKundeOprettet = new JLabel("");
+		lblKundeOprettet.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblKundeOprettet.setBounds(10, 170, 134, 14);
+		panelOpret.add(lblKundeOprettet);
+		lblKundeOprettet.setVisible(false);
+		
 		//END Opret kunde panel
 		
 		//START Ret/slet kunde panel
@@ -410,7 +419,16 @@ public class CustomerGUI extends JFrame {
 		String zipCode = txtPostnr.getText();						
 		try 
 		{
-			cusCtr.insertNewCustomer(name, phone, email, address, zipCode);
+			if(cusCtr.insertNewCustomer(name, phone, email, address, zipCode))
+			{
+				lblKundeOprettet.setText("Kunden blev oprettet.");
+				lblKundeOprettet.setVisible(true);
+			}
+			else
+			{
+				lblKundeOprettet.setText("Kunden blev ikke oprettet.");
+				lblKundeOprettet.setVisible(true);
+			}
 		} 
 		catch (Exception e1) 
 		{
@@ -437,16 +455,4 @@ public class CustomerGUI extends JFrame {
 		txtTelefon.setText("");
 		lblBy.setText("");
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
