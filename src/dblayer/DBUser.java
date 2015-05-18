@@ -2,6 +2,7 @@ package dblayer;
 import modellayer.*;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DBUser {
 
@@ -13,7 +14,7 @@ public class DBUser {
 	}
 
 	/**
-	 * Metode til at insætte en user i DB
+	 * Metode til at insï¿½tte en user i DB
 	 * @param user
 	 * @return rc
 	 * @throws Exception
@@ -78,6 +79,42 @@ public class DBUser {
 		}		
 		return userObj;
 	}
+	
+	public ArrayList<User> getAllUsers()
+	{		
+		ResultSet rs = null;
+		ArrayList<User> list = new ArrayList<User>();
+		PreparedStatement findAll;
+		try 
+		{
+			findAll = con.prepareStatement("SELECT * FROM users");
+			findAll.setQueryTimeout(5);
+			rs = findAll.executeQuery();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		try 
+		{
+			while(rs.next())
+			{
+				User userObj = new User();
+				userObj.setName(rs.getString("name"));
+				userObj.setEmail(rs.getString("email"));
+				userObj.setPhone(rs.getString("phoneNo"));
+				userObj.setPassword(rs.getString("password"));
+
+				list.add(userObj);
+			}
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
 
 
 	public int updateUser(User user)
@@ -86,12 +123,12 @@ public class DBUser {
 		PreparedStatement update;
 		try
 		{
-			update = con.prepareStatement("UPDATE users SET name = ?, phoneNo = ?, email = ?,"
-					+ " password = ?, WHERE phoneNo = ? ");
+			update = con.prepareStatement("UPDATE users SET name = ?, phoneNo = ?, email = ?"
+					+ " WHERE phoneNo = ? ");
 			update.setString(1, user.getName());
 			update.setString(2, user.getPhone());
 			update.setString(3, user.getEmail());
-			update.setString(4, user.getPassword());
+//			update.setString(4, user.getPassword());
 
 			update.setQueryTimeout(5);
 			rc = update.executeUpdate();

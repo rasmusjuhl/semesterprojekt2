@@ -1,5 +1,7 @@
 package ctrlayer;
 
+import java.util.ArrayList;
+
 import modellayer.*;
 import dblayer.*;
 
@@ -33,9 +35,14 @@ public class UserCtr {
 		return dbUser.findUser(phoneNo);
 	}
 	
-	public int updateUser(String name, String phone, String email, String password)
+	public ArrayList<User> findAlleUsers()
 	{
-		User user = new User(name, phone, email, password);
+		return dbUser.getAllUsers();
+	}
+	
+	public int updateUser(String name, String phone, String email)
+	{
+		User user = new User(name, phone, email);
 		return dbUser.updateUser(user);				
 	}
 	
