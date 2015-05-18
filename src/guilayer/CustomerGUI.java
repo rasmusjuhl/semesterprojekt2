@@ -26,6 +26,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class CustomerGUI extends JFrame {
 
@@ -221,13 +223,10 @@ public class CustomerGUI extends JFrame {
 		panelOpret.add(txtAdresse);
 		
 		txtPostnr = new JTextField();
-		txtPostnr.addKeyListener(new KeyAdapter() {
+		txtPostnr.addFocusListener(new FocusAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_TAB)
-				{
-					getCity();
-				}
+			public void focusLost(FocusEvent arg0) {
+				getCity();
 			}
 		});
 		txtPostnr.setColumns(10);
