@@ -1,5 +1,6 @@
 package guilayer;
 import ctrlayer.*;
+import dblayer.*;
 import modellayer.*;
 
 import java.awt.EventQueue;
@@ -23,6 +24,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class CustomerGUI extends JFrame {
 
@@ -56,6 +59,7 @@ public class CustomerGUI extends JFrame {
 	private JPanel panelOpret;
 	private JScrollPane scrollPane;
 	private JButton btnSlet;
+	private JLabel lblBy;
 
 	/**
 	 * Launch the application.
@@ -217,6 +221,15 @@ public class CustomerGUI extends JFrame {
 		panelOpret.add(txtAdresse);
 		
 		txtPostnr = new JTextField();
+		txtPostnr.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_TAB)
+				{
+					getCity();
+				}
+			}
+		});
 		txtPostnr.setColumns(10);
 		txtPostnr.setBounds(97, 59, 134, 20);
 		panelOpret.add(txtPostnr);
@@ -227,6 +240,15 @@ public class CustomerGUI extends JFrame {
 		panelOpret.add(txtTelefon);
 		
 		txtEmail = new JTextField();
+		txtEmail.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					btnOpret.doClick();
+				}		
+			}
+		});
 		txtEmail.setColumns(10);
 		txtEmail.setBounds(97, 109, 134, 20);
 		panelOpret.add(txtEmail);
@@ -239,6 +261,12 @@ public class CustomerGUI extends JFrame {
 		});
 		btnOpret.setBounds(10, 136, 89, 23);
 		panelOpret.add(btnOpret);		
+		
+		lblBy = new JLabel("By");
+		lblBy.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblBy.setBounds(240, 62, 102, 14);
+		panelOpret.add(lblBy);
+		lblBy.setVisible(false);
 		//END Opret kunde panel
 		
 		//START Ret kunde panel
@@ -389,6 +417,19 @@ public class CustomerGUI extends JFrame {
 			e1.printStackTrace();
 		}
 	}
+	
+	private void getCity()
+	{
+		String zipCode = txtPostnr.getText();
+		DBLocation dbLoc = new DBLocation();
+		Location loc = dbLoc.findLocation(zipCode);
+		String city = loc.getCity();
+		lblBy.setText(city);
+		lblBy.setVisible(true);
+	}
+	
+	
+	
 	
 	
 	
