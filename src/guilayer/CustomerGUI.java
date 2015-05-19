@@ -146,54 +146,54 @@ public class CustomerGUI extends JFrame {
 
 
 		//START Find kunde components
-		panelFind = new JPanel();
-		panelFind.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panelFind.setBounds(166, 11, 836, 600);
-		contentPane.add(panelFind);
-		panelFind.setLayout(null);
-
-		lblTelefon_1 = new JLabel("Telefon");
-		lblTelefon_1.setBounds(10, 11, 68, 14);
-		panelFind.add(lblTelefon_1);
-
-		txtFindTelefon = new JTextField();
-		txtFindTelefon.setBounds(88, 8, 125, 20);
-		panelFind.add(txtFindTelefon);
-		txtFindTelefon.setColumns(10);
-
-		btnFind = new JButton("Find");
-		btnFind.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				findCustomer(model);
-			}
-		});
-		btnFind.setBounds(10, 36, 100, 23);
-		panelFind.add(btnFind);
-
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(244, 11, 582, 311);
-		panelFind.add(scrollPane);
-
-		model = new DefaultTableModel(new Object[][] {},new String[] {"Navn", "Adresse", "Postnr", "By", "Telefon", "Email"});
-		table = new JTable(model)
-		{
-			Class[] columnTypes = new Class[] {
-					String.class, String.class, String.class, String.class, String.class, String.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		};
-		scrollPane.setViewportView(table);
-
-		JButton btnFindAlle = new JButton("Find alle");
-		btnFindAlle.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				findAllCustomers(model);
-			}
-		});
-		btnFindAlle.setBounds(120, 36, 89, 23);
-		panelFind.add(btnFindAlle);
+//		panelFind = new JPanel();
+//		panelFind.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+//		panelFind.setBounds(166, 11, 836, 600);
+//		contentPane.add(panelFind);
+//		panelFind.setLayout(null);
+//
+//		lblTelefon_1 = new JLabel("Telefon");
+//		lblTelefon_1.setBounds(10, 11, 68, 14);
+//		panelFind.add(lblTelefon_1);
+//
+//		txtFindTelefon = new JTextField();
+//		txtFindTelefon.setBounds(88, 8, 125, 20);
+//		panelFind.add(txtFindTelefon);
+//		txtFindTelefon.setColumns(10);
+//
+//		btnFind = new JButton("Find");
+//		btnFind.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				findCustomer(model);
+//			}
+//		});
+//		btnFind.setBounds(10, 36, 100, 23);
+//		panelFind.add(btnFind);
+//
+//		scrollPane = new JScrollPane();
+//		scrollPane.setBounds(244, 11, 582, 311);
+//		panelFind.add(scrollPane);
+//
+//		model = new DefaultTableModel(new Object[][] {},new String[] {"Navn", "Adresse", "Postnr", "By", "Telefon", "Email"});
+//		table = new JTable(model)
+//		{
+//			Class[] columnTypes = new Class[] {
+//					String.class, String.class, String.class, String.class, String.class, String.class
+//			};
+//			public Class getColumnClass(int columnIndex) {
+//				return columnTypes[columnIndex];
+//			}
+//		};
+//		scrollPane.setViewportView(table);
+//
+//		JButton btnFindAlle = new JButton("Find alle");
+//		btnFindAlle.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				findAllCustomers(model);
+//			}
+//		});
+//		btnFindAlle.setBounds(120, 36, 89, 23);
+//		panelFind.add(btnFindAlle);
 		//END Find kunde panel
 
 
@@ -230,6 +230,12 @@ public class CustomerGUI extends JFrame {
 		panelOpret.add(lblEmail);
 
 		txtNavn = new JTextField();
+		txtNavn.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				lblKundeOprettet.setVisible(false);
+			}
+		});
 		txtNavn.setBounds(97, 9, 134, 20);
 		panelOpret.add(txtNavn);
 		txtNavn.setColumns(10);
@@ -297,45 +303,45 @@ public class CustomerGUI extends JFrame {
 		//END Opret kunde panel
 
 		//START Ret/slet kunde panel
-		panelRet = new JPanel();
-		panelRet.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panelRet.setBounds(166, 11, 836, 600);
-		contentPane.add(panelRet);
-		panelRet.setLayout(null);	
-
-		scrollPaneRet = new JScrollPane();
-		scrollPaneRet.setBounds(10, 11, 816, 319);
-		panelRet.add(scrollPaneRet);
-
-		modelRet = new DefaultTableModel(new Object[][] {},new String[] {"Navn", "Adresse", "Postnr", "By", "Telefon", "Email"});
-		tableRet = new JTable(modelRet)
-		{
-			Class[] columnTypes = new Class[] {
-					String.class, String.class, String.class, String.class, String.class, String.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		};
-		scrollPaneRet.setViewportView(tableRet);
-
-		btnRet = new JButton("Ret");
-		btnRet.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				updateCustomer();
-			}
-		});
-		btnRet.setBounds(10, 341, 89, 23);
-		panelRet.add(btnRet);
-
-		btnSlet = new JButton("Slet");
-		btnSlet.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				deleteCustomer();
-			}
-		});
-		btnSlet.setBounds(109, 341, 89, 23);
-		panelRet.add(btnSlet);
+//		panelRet = new JPanel();
+//		panelRet.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+//		panelRet.setBounds(166, 11, 836, 600);
+//		contentPane.add(panelRet);
+//		panelRet.setLayout(null);	
+//
+//		scrollPaneRet = new JScrollPane();
+//		scrollPaneRet.setBounds(10, 11, 816, 319);
+//		panelRet.add(scrollPaneRet);
+//
+//		modelRet = new DefaultTableModel(new Object[][] {},new String[] {"Navn", "Adresse", "Postnr", "By", "Telefon", "Email"});
+//		tableRet = new JTable(modelRet)
+//		{
+//			Class[] columnTypes = new Class[] {
+//					String.class, String.class, String.class, String.class, String.class, String.class
+//			};
+//			public Class getColumnClass(int columnIndex) {
+//				return columnTypes[columnIndex];
+//			}
+//		};
+//		scrollPaneRet.setViewportView(tableRet);
+//
+//		btnRet = new JButton("Ret");
+//		btnRet.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				updateCustomer();
+//			}
+//		});
+//		btnRet.setBounds(10, 341, 89, 23);
+//		panelRet.add(btnRet);
+//
+//		btnSlet = new JButton("Slet");
+//		btnSlet.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				deleteCustomer();
+//			}
+//		});
+//		btnSlet.setBounds(109, 341, 89, 23);
+//		panelRet.add(btnSlet);
 		//END Ret/slet kunde panel
 
 
