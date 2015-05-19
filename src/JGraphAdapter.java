@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JApplet;
+
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
@@ -25,7 +26,7 @@ public class JGraphAdapter extends JApplet {
      */
     public void init(  ) {
         // create a JGraphT graph
-		ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> myGraph = new ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+		ListenableUndirectedWeightedGraph<String, MyEdge> myGraph = new ListenableUndirectedWeightedGraph<String, MyEdge>(MyEdge.class);
 
 
         // create a visualization using JGraph, via an adapter
@@ -82,6 +83,12 @@ public class JGraphAdapter extends JApplet {
         jg.setBackground( c );
     }
 
+    public static class MyEdge extends DefaultWeightedEdge {
+        @Override
+        public String toString() {
+            return String.valueOf(getWeight());
+        }
+    }
 
     private void positionVertexAt( Object vertex, int x, int y ) {
         DefaultGraphCell cell = m_jgAdapter.getVertexCell( vertex );
