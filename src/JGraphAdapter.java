@@ -50,11 +50,16 @@ public class JGraphAdapter extends JApplet {
         myGraph.addVertex( s3 );
         myGraph.addVertex( s4 );
 
-        myGraph.addEdge( s1, s2 );
-        myGraph.addEdge( s1, s3 );
-        myGraph.addEdge( s2, s4 );
-        myGraph.addEdge( s3, s4 );
+        MyEdge e1 = myGraph.addEdge( s1, s2 );
+        MyEdge e2 = myGraph.addEdge( s1, s3 );
+        MyEdge e3 = myGraph.addEdge( s2, s4 );
+        MyEdge e4 = myGraph.addEdge( s3, s4 );
 
+		myGraph.setEdgeWeight(e1, 100);
+		myGraph.setEdgeWeight(e2, 75);
+		myGraph.setEdgeWeight(e3, 50);
+		myGraph.setEdgeWeight(e4, 25);
+		
         // position vertices nicely within JGraph component
         positionVertexAt( s1, 150, 130 );
         positionVertexAt( s2, 100, 50 );
