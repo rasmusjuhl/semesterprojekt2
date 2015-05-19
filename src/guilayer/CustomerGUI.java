@@ -263,8 +263,6 @@ public class CustomerGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) 
 			{
 				checkRegularExp();
-				//				insertCustomer();
-//				clearFieldsOpret();
 			}
 		});
 		btnOpret.setBounds(10, 136, 89, 23);
@@ -418,40 +416,111 @@ public class CustomerGUI extends JFrame {
 
 	private void checkRegularExp()
 	{
+		checkEmail();
+//		String email = txtEmail.getText();
+//		String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$";
+//
+//		Pattern patEmail = Pattern.compile(emailPattern);
+//		Matcher m = patEmail.matcher(email);
+//		
+//		if(m.find()) // check email
+//		{
+//			String phone = txtTelefon.getText();
+//			String phonePattern = "^[0-9]{1,8}$";
+//
+//			Pattern patPhone = Pattern.compile(phonePattern);
+//			Matcher p = patPhone.matcher(phone);
+//			
+//			if(p.find()) // check phone
+//			{
+//				String zipCode = txtPostnr.getText();
+//				String zipPattern = "^[0-9]{4}$";
+//
+//				Pattern patZip = Pattern.compile(zipPattern);
+//				Matcher z= patZip.matcher(zipCode);
+//				if(z.find())  // check zipcode
+//				{
+//					insertCustomer();
+//					clearFieldsOpret();
+//				}
+//				else
+//				{
+//					lblKundeOprettet.setText("Kunde ikke oprettet. Postnr. skal bestå af præcis 4 tal.");
+//					lblKundeOprettet.setVisible(true);
+//				}
+//				
+//			}
+//			else
+//			{
+//				lblKundeOprettet.setText("Kunde ikke oprettet. Telefon nr. skal bestå af tal.");
+//				lblKundeOprettet.setVisible(true);
+//			}			
+//		}
+//		else
+//		{
+//			lblKundeOprettet.setText("Kunde ikke oprettet. Email skal være i formattet: navn@mail.dk");
+//			lblKundeOprettet.setVisible(true);
+//		}
+	}
+
+	private void checkEmail()
+	{
 		String email = txtEmail.getText();
 		String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$";
 
 		Pattern patEmail = Pattern.compile(emailPattern);
 		Matcher m = patEmail.matcher(email);
 		
-		if(m.find())
+		if(m.find()) // check email
 		{
-			String phone = txtTelefon.getText();
-			String phonePattern = "^[0-9]{1,8}$";
-
-			Pattern patPhone = Pattern.compile(phonePattern);
-			Matcher p = patPhone.matcher(phone);
-			
-			if(p.find())
-			{
-				insertCustomer();
-			}
-			else
-			{
-				lblKundeOprettet.setText("Kunde ikke oprettet. Telefon nr. skal bestå af tal.");
-				lblKundeOprettet.setVisible(true);
-			}			
+			checkPhoneNo();	
 		}
 		else
 		{
 			lblKundeOprettet.setText("Kunde ikke oprettet. Email skal være i formattet: navn@mail.dk");
 			lblKundeOprettet.setVisible(true);
 		}
-
-
-
 	}
+	
+	private void checkPhoneNo()
+	{
+		String phone = txtTelefon.getText();
+		String phonePattern = "^[0-9]{1,8}$";
 
+		Pattern patPhone = Pattern.compile(phonePattern);
+		Matcher p = patPhone.matcher(phone);
+		
+		if(p.find()) // check phone
+		{
+			checkZipCode();			
+		}
+		else
+		{
+			lblKundeOprettet.setText("Kunde ikke oprettet. Telefon nr. skal bestå af tal.");
+			lblKundeOprettet.setVisible(true);
+		}		
+	}
+	
+	private void checkZipCode()
+	{
+		String zipCode = txtPostnr.getText();
+		String zipPattern = "^[0-9]{4}$";
+
+		Pattern patZip = Pattern.compile(zipPattern);
+		Matcher z= patZip.matcher(zipCode);
+		
+		if(z.find())  // check zipcode
+		{
+			insertCustomer();
+			clearFieldsOpret();
+		}
+		else
+		{
+			lblKundeOprettet.setText("Kunde ikke oprettet. Postnr. skal bestå af præcis 4 tal.");
+			lblKundeOprettet.setVisible(true);
+		}
+	}
+	
 	private void insertCustomer()
 	{
 		String name = txtNavn.getText();
