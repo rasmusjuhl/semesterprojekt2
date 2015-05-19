@@ -35,6 +35,8 @@ import java.awt.event.FocusEvent;
 public class CustomerGUI extends JFrame {
 
 	private CustomerCtr cusCtr;
+	private static CustomerGUI instance = null;
+	
 	private JPanel contentPane;
 	private JTextField txtNavn;
 	private JTextField txtAdresse;
@@ -66,6 +68,7 @@ public class CustomerGUI extends JFrame {
 	private JButton btnSlet;
 	private JLabel lblBy;
 	private JLabel lblKundeOprettet;
+	
 
 	/**
 	 * Launch the application.
@@ -86,13 +89,22 @@ public class CustomerGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CustomerGUI() 
+	private CustomerGUI() 
 	{
 		cusCtr = new CustomerCtr();
 		initComponents();
-
 	}
 
+	public static CustomerGUI getInstance()
+	{
+		if(instance == null)
+		{
+			instance = new CustomerGUI();
+		}
+		return instance;
+	}
+	
+	
 	public void initComponents()
 	{
 		setTitle("Customer GUI");
@@ -134,54 +146,54 @@ public class CustomerGUI extends JFrame {
 
 
 		//START Find kunde components
-		//		panelFind = new JPanel();
-		//		panelFind.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		//		panelFind.setBounds(166, 11, 836, 600);
-		//		contentPane.add(panelFind);
-		//		panelFind.setLayout(null);
-		//
-		//		lblTelefon_1 = new JLabel("Telefon");
-		//		lblTelefon_1.setBounds(10, 11, 68, 14);
-		//		panelFind.add(lblTelefon_1);
-		//
-		//		txtFindTelefon = new JTextField();
-		//		txtFindTelefon.setBounds(88, 8, 125, 20);
-		//		panelFind.add(txtFindTelefon);
-		//		txtFindTelefon.setColumns(10);
-		//
-		//		btnFind = new JButton("Find");
-		//		btnFind.addActionListener(new ActionListener() {
-		//			public void actionPerformed(ActionEvent e) {
-		//				findCustomer(model);
-		//			}
-		//		});
-		//		btnFind.setBounds(10, 36, 100, 23);
-		//		panelFind.add(btnFind);
-		//
-		//		scrollPane = new JScrollPane();
-		//		scrollPane.setBounds(244, 11, 582, 311);
-		//		panelFind.add(scrollPane);
-		//
-		//		model = new DefaultTableModel(new Object[][] {},new String[] {"Navn", "Adresse", "Postnr", "By", "Telefon", "Email"});
-		//		table = new JTable(model)
-		//		{
-		//			Class[] columnTypes = new Class[] {
-		//					String.class, String.class, String.class, String.class, String.class, String.class
-		//			};
-		//			public Class getColumnClass(int columnIndex) {
-		//				return columnTypes[columnIndex];
-		//			}
-		//		};
-		//		scrollPane.setViewportView(table);
-		//
-		//		JButton btnFindAlle = new JButton("Find alle");
-		//		btnFindAlle.addActionListener(new ActionListener() {
-		//			public void actionPerformed(ActionEvent e) {
-		//				findAllCustomers(model);
-		//			}
-		//		});
-		//		btnFindAlle.setBounds(120, 36, 89, 23);
-		//		panelFind.add(btnFindAlle);
+		panelFind = new JPanel();
+		panelFind.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panelFind.setBounds(166, 11, 836, 600);
+		contentPane.add(panelFind);
+		panelFind.setLayout(null);
+
+		lblTelefon_1 = new JLabel("Telefon");
+		lblTelefon_1.setBounds(10, 11, 68, 14);
+		panelFind.add(lblTelefon_1);
+
+		txtFindTelefon = new JTextField();
+		txtFindTelefon.setBounds(88, 8, 125, 20);
+		panelFind.add(txtFindTelefon);
+		txtFindTelefon.setColumns(10);
+
+		btnFind = new JButton("Find");
+		btnFind.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				findCustomer(model);
+			}
+		});
+		btnFind.setBounds(10, 36, 100, 23);
+		panelFind.add(btnFind);
+
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(244, 11, 582, 311);
+		panelFind.add(scrollPane);
+
+		model = new DefaultTableModel(new Object[][] {},new String[] {"Navn", "Adresse", "Postnr", "By", "Telefon", "Email"});
+		table = new JTable(model)
+		{
+			Class[] columnTypes = new Class[] {
+					String.class, String.class, String.class, String.class, String.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		};
+		scrollPane.setViewportView(table);
+
+		JButton btnFindAlle = new JButton("Find alle");
+		btnFindAlle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				findAllCustomers(model);
+			}
+		});
+		btnFindAlle.setBounds(120, 36, 89, 23);
+		panelFind.add(btnFindAlle);
 		//END Find kunde panel
 
 
@@ -280,48 +292,50 @@ public class CustomerGUI extends JFrame {
 		panelOpret.add(lblKundeOprettet);
 		lblKundeOprettet.setVisible(false);
 
+
+
 		//END Opret kunde panel
 
 		//START Ret/slet kunde panel
-		//		panelRet = new JPanel();
-		//		panelRet.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		//		panelRet.setBounds(166, 11, 836, 600);
-		//		contentPane.add(panelRet);
-		//		panelRet.setLayout(null);	
-		//
-		//		scrollPaneRet = new JScrollPane();
-		//		scrollPaneRet.setBounds(10, 11, 816, 319);
-		//		panelRet.add(scrollPaneRet);
-		//
-		//		modelRet = new DefaultTableModel(new Object[][] {},new String[] {"Navn", "Adresse", "Postnr", "By", "Telefon", "Email"});
-		//		tableRet = new JTable(modelRet)
-		//		{
-		//			Class[] columnTypes = new Class[] {
-		//					String.class, String.class, String.class, String.class, String.class, String.class
-		//			};
-		//			public Class getColumnClass(int columnIndex) {
-		//				return columnTypes[columnIndex];
-		//			}
-		//		};
-		//		scrollPaneRet.setViewportView(tableRet);
-		//
-		//		btnRet = new JButton("Ret");
-		//		btnRet.addActionListener(new ActionListener() {
-		//			public void actionPerformed(ActionEvent e) {
-		//				updateCustomer();
-		//			}
-		//		});
-		//		btnRet.setBounds(10, 341, 89, 23);
-		//		panelRet.add(btnRet);
-		//
-		//		btnSlet = new JButton("Slet");
-		//		btnSlet.addActionListener(new ActionListener() {
-		//			public void actionPerformed(ActionEvent e) {
-		//				deleteCustomer();
-		//			}
-		//		});
-		//		btnSlet.setBounds(109, 341, 89, 23);
-		//		panelRet.add(btnSlet);
+		panelRet = new JPanel();
+		panelRet.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panelRet.setBounds(166, 11, 836, 600);
+		contentPane.add(panelRet);
+		panelRet.setLayout(null);	
+
+		scrollPaneRet = new JScrollPane();
+		scrollPaneRet.setBounds(10, 11, 816, 319);
+		panelRet.add(scrollPaneRet);
+
+		modelRet = new DefaultTableModel(new Object[][] {},new String[] {"Navn", "Adresse", "Postnr", "By", "Telefon", "Email"});
+		tableRet = new JTable(modelRet)
+		{
+			Class[] columnTypes = new Class[] {
+					String.class, String.class, String.class, String.class, String.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		};
+		scrollPaneRet.setViewportView(tableRet);
+
+		btnRet = new JButton("Ret");
+		btnRet.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateCustomer();
+			}
+		});
+		btnRet.setBounds(10, 341, 89, 23);
+		panelRet.add(btnRet);
+
+		btnSlet = new JButton("Slet");
+		btnSlet.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				deleteCustomer();
+			}
+		});
+		btnSlet.setBounds(109, 341, 89, 23);
+		panelRet.add(btnSlet);
 		//END Ret/slet kunde panel
 
 
@@ -330,9 +344,9 @@ public class CustomerGUI extends JFrame {
 
 
 
-		//		panelRet.setVisible(false);
-		//		panelOpret.setVisible(false);
-		//		panelFind.setVisible(false);
+		panelRet.setVisible(false);
+		panelOpret.setVisible(false);
+		panelFind.setVisible(false);
 	}
 
 
@@ -417,50 +431,50 @@ public class CustomerGUI extends JFrame {
 	private void checkRegularExp()
 	{
 		checkEmail();
-//		String email = txtEmail.getText();
-//		String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$";
-//
-//		Pattern patEmail = Pattern.compile(emailPattern);
-//		Matcher m = patEmail.matcher(email);
-//		
-//		if(m.find()) // check email
-//		{
-//			String phone = txtTelefon.getText();
-//			String phonePattern = "^[0-9]{1,8}$";
-//
-//			Pattern patPhone = Pattern.compile(phonePattern);
-//			Matcher p = patPhone.matcher(phone);
-//			
-//			if(p.find()) // check phone
-//			{
-//				String zipCode = txtPostnr.getText();
-//				String zipPattern = "^[0-9]{4}$";
-//
-//				Pattern patZip = Pattern.compile(zipPattern);
-//				Matcher z= patZip.matcher(zipCode);
-//				if(z.find())  // check zipcode
-//				{
-//					insertCustomer();
-//					clearFieldsOpret();
-//				}
-//				else
-//				{
-//					lblKundeOprettet.setText("Kunde ikke oprettet. Postnr. skal bestå af præcis 4 tal.");
-//					lblKundeOprettet.setVisible(true);
-//				}
-//				
-//			}
-//			else
-//			{
-//				lblKundeOprettet.setText("Kunde ikke oprettet. Telefon nr. skal bestå af tal.");
-//				lblKundeOprettet.setVisible(true);
-//			}			
-//		}
-//		else
-//		{
-//			lblKundeOprettet.setText("Kunde ikke oprettet. Email skal være i formattet: navn@mail.dk");
-//			lblKundeOprettet.setVisible(true);
-//		}
+		//		String email = txtEmail.getText();
+		//		String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$";
+		//
+		//		Pattern patEmail = Pattern.compile(emailPattern);
+		//		Matcher m = patEmail.matcher(email);
+		//		
+		//		if(m.find()) // check email
+		//		{
+		//			String phone = txtTelefon.getText();
+		//			String phonePattern = "^[0-9]{1,8}$";
+		//
+		//			Pattern patPhone = Pattern.compile(phonePattern);
+		//			Matcher p = patPhone.matcher(phone);
+		//			
+		//			if(p.find()) // check phone
+		//			{
+		//				String zipCode = txtPostnr.getText();
+		//				String zipPattern = "^[0-9]{4}$";
+		//
+		//				Pattern patZip = Pattern.compile(zipPattern);
+		//				Matcher z= patZip.matcher(zipCode);
+		//				if(z.find())  // check zipcode
+		//				{
+		//					insertCustomer();
+		//					clearFieldsOpret();
+		//				}
+		//				else
+		//				{
+		//					lblKundeOprettet.setText("Kunde ikke oprettet. Postnr. skal bestå af præcis 4 tal.");
+		//					lblKundeOprettet.setVisible(true);
+		//				}
+		//				
+		//			}
+		//			else
+		//			{
+		//				lblKundeOprettet.setText("Kunde ikke oprettet. Telefon nr. skal bestå af tal.");
+		//				lblKundeOprettet.setVisible(true);
+		//			}			
+		//		}
+		//		else
+		//		{
+		//			lblKundeOprettet.setText("Kunde ikke oprettet. Email skal være i formattet: navn@mail.dk");
+		//			lblKundeOprettet.setVisible(true);
+		//		}
 	}
 
 	private void checkEmail()
@@ -470,7 +484,7 @@ public class CustomerGUI extends JFrame {
 
 		Pattern patEmail = Pattern.compile(emailPattern);
 		Matcher m = patEmail.matcher(email);
-		
+
 		if(m.find()) // check email
 		{
 			checkPhoneNo();	
@@ -481,7 +495,7 @@ public class CustomerGUI extends JFrame {
 			lblKundeOprettet.setVisible(true);
 		}
 	}
-	
+
 	private void checkPhoneNo()
 	{
 		String phone = txtTelefon.getText();
@@ -489,7 +503,7 @@ public class CustomerGUI extends JFrame {
 
 		Pattern patPhone = Pattern.compile(phonePattern);
 		Matcher p = patPhone.matcher(phone);
-		
+
 		if(p.find()) // check phone
 		{
 			checkZipCode();			
@@ -500,7 +514,7 @@ public class CustomerGUI extends JFrame {
 			lblKundeOprettet.setVisible(true);
 		}		
 	}
-	
+
 	private void checkZipCode()
 	{
 		String zipCode = txtPostnr.getText();
@@ -508,7 +522,7 @@ public class CustomerGUI extends JFrame {
 
 		Pattern patZip = Pattern.compile(zipPattern);
 		Matcher z= patZip.matcher(zipCode);
-		
+
 		if(z.find())  // check zipcode
 		{
 			insertCustomer();
@@ -520,7 +534,7 @@ public class CustomerGUI extends JFrame {
 			lblKundeOprettet.setVisible(true);
 		}
 	}
-	
+
 	private void insertCustomer()
 	{
 		String name = txtNavn.getText();
@@ -565,5 +579,8 @@ public class CustomerGUI extends JFrame {
 		txtEmail.setText("");
 		txtTelefon.setText("");
 		lblBy.setText("");
+
 	}
+
+
 }
