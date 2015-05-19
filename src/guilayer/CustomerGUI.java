@@ -10,6 +10,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 
@@ -36,6 +37,7 @@ public class CustomerGUI extends JFrame {
 
 	private CustomerCtr cusCtr;
 	private static CustomerGUI instance = null;
+	private CheckOnline co;
 	
 	private JPanel contentPane;
 	private JTextField txtNavn;
@@ -68,6 +70,8 @@ public class CustomerGUI extends JFrame {
 	private JButton btnSlet;
 	private JLabel lblBy;
 	private JLabel lblKundeOprettet;
+	private JLabel lblStatus;
+	private JLabel lblTal;
 	
 
 	/**
@@ -297,6 +301,29 @@ public class CustomerGUI extends JFrame {
 		lblKundeOprettet.setBounds(10, 170, 418, 14);
 		panelOpret.add(lblKundeOprettet);
 		lblKundeOprettet.setVisible(false);
+		
+		lblStatus = new JLabel("Forbundet til DB: ");
+		lblStatus.setBounds(10, 194, 146, 14);
+		contentPane.add(lblStatus);
+		
+		JButton btnExplode = new JButton("Explode");
+		btnExplode.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				for(int i = 0; i < 100; i++)
+				{
+					(co = new CheckOnline()).execute();
+					lblTal.setText(Integer.toString(i));
+				}
+				
+			}
+		});
+		btnExplode.setBounds(40, 315, 89, 23);
+		contentPane.add(btnExplode);
+		
+		lblTal = new JLabel("tal");
+		lblTal.setBounds(20, 219, 46, 14);
+		contentPane.add(lblTal);
+		
 
 
 
@@ -350,9 +377,9 @@ public class CustomerGUI extends JFrame {
 
 
 
-		panelRet.setVisible(false);
-		panelOpret.setVisible(false);
-		panelFind.setVisible(false);
+//		panelRet.setVisible(false);
+//		panelOpret.setVisible(false);
+//		panelFind.setVisible(false);
 	}
 
 
@@ -588,5 +615,40 @@ public class CustomerGUI extends JFrame {
 
 	}
 
-
+	private class CheckOnline extends SwingWorker<Boolean, Void>
+	{
+        @Override
+        protected Boolean doInBackground() 
+        {
+        	boolean online = false;
+        	DBConnection dbCon = DBConnection.getInstance();
+    		if(dbCon.getDBcon() != null)
+    		{
+    			online = true;
+            }
+            return online;
+        }
+ 
+        @Override
+        public void done()
+        {
+        	try 
+        	{
+        		lblStatus.setText("Forbundet til DB: " + get());
+            } 
+        	catch (InterruptedException ignore) 
+        	{}
+            catch (java.util.concurrent.ExecutionException e) 
+        	{
+                String why = null;
+                Throwable cause = e.getCause();
+                if (cause != null) {
+                    why = cause.getMessage();
+                } else {
+                    why = e.getMessage();
+                }
+                System.err.println("Error retrieving file: " + why);
+            }
+        }
+    }
 }
