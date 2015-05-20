@@ -13,13 +13,17 @@ public class CustomerCtr {
 		dbCus = new DBCustomer();
 	}
 
-	public void insertNewCustomer(String name, String phone, String email, String address, String zipCode) throws Exception
+	public boolean insertNewCustomer(String name, String phone, String email, String address, String zipCode) throws Exception
 	{
+		boolean success = false;
 		Customer cusObj = new Customer(name, phone,  email,  address,  zipCode);
 		try
 		{
 			DBConnection.startTransaction();
-			dbCus.insertCustomer(cusObj);
+			if(dbCus.insertCustomer(cusObj) == 1)
+			{
+				success = true;
+			}
 			DBConnection.commitTransaction();			
 		}
 		catch(Exception e)
@@ -27,6 +31,7 @@ public class CustomerCtr {
 			DBConnection.rollbackTransaction();
 			throw new Exception("Customer not inserted");
 		}
+		return success;
 	}
 	
 	//find a customer
