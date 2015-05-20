@@ -11,15 +11,15 @@ import java.util.List;
 
 public class RouteCtr {
 	
-	private CustomerCtr cCtr;
-	private DBEdge dbe;
+	private static CustomerCtr cCtr;
+	private static DBEdge dbe;
 
 	public RouteCtr() {
 		cCtr = new CustomerCtr();
 		dbe = new DBEdge();
 	}
 	
-	public ArrayList<Customer> createRoute() // should take 2 Customers
+	public static ArrayList<Customer> createRoute() // should take 2 Customers
 	{
 		ListenableUndirectedWeightedGraph<Customer, DefaultWeightedEdge> myGraph = 
 				new ListenableUndirectedWeightedGraph<Customer, DefaultWeightedEdge>(DefaultWeightedEdge.class);
@@ -54,6 +54,9 @@ public class RouteCtr {
 		System.out.println(myGraph);
 		return customerList;
 		
+	}
+	public static void main(String[] args) {
+		createRoute();
 	}
 
 }
