@@ -2,6 +2,7 @@ package dblayer;
 import modellayer.*;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DBEdge {
 
@@ -45,6 +46,43 @@ public class DBEdge {
 			System.out.println("Query exception: " + e);
 		}		
 		return edge;		
+	}
+	
+	public ArrayList<Edge> findAllEdges()
+	{
+		ResultSet rs = null;
+		ArrayList<Edge> list = new ArrayList<Edge>();
+		PreparedStatement findAll;
+		try 
+		{
+			findAll = con.prepareStatement("SELECT * FROM edges");
+			findAll.setQueryTimeout(5);
+			rs = findAll.executeQuery();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		try {
+			while(rs.next())
+			{
+				Edge e = new Edge();
+				String a = rs.getString("fromID");
+				String b = rs.getString("toID");
+				
+				e.setPointA(new DBCustomer().findCustomer(a));
+				e.setPointB(new DBCustomer().findCustomer(b));
+				e.setDistance(rs.getDouble("distance"));
+
+				list.add(e);
+			}
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return list;		
 	}
 }
 
