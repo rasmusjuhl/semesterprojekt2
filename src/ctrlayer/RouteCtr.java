@@ -26,34 +26,36 @@ public class RouteCtr {
 				new ListenableUndirectedWeightedGraph<Customer, DefaultWeightedEdge>(DefaultWeightedEdge.class);
 		
 		ArrayList<Customer> customerList = cCtr.findAllCustomers(); 
+		ArrayList<Edge> edges = dbe.findAllEdges();
 		
-		myGraph.addVertex(customerList.get(0));
-		myGraph.addVertex(customerList.get(1));
-		myGraph.addVertex(customerList.get(2));
-		myGraph.addVertex(customerList.get(3));
-		myGraph.addVertex(customerList.get(4));
-		myGraph.addVertex(customerList.get(5));
-		myGraph.addVertex(customerList.get(6));
-		myGraph.addVertex(customerList.get(7));
-		myGraph.addVertex(customerList.get(8));
-		myGraph.addVertex(customerList.get(9));
-		myGraph.addVertex(customerList.get(10));
-		myGraph.addVertex(customerList.get(11));
+		for(int i = 0; i < customerList.size(); i++)
+		{
+			myGraph.addVertex(customerList.get(i));
+		}
+		
 		
 		System.out.println("\ncustomers");
 		for(int i = 0; i < customerList.size(); i++)
 		{
 			System.out.println(customerList.get(i).getName());
 		}
-		
-		ArrayList<Edge> edges = dbe.findAllEdges();
 		System.out.println("\nedges");
 		for(int i = 0; i < edges.size(); i++)
 		{
 			System.out.println(edges.get(i).getPointA().getName() + " -> " + edges.get(i).getPointB().getName());
 		}
 		
+		
+//		for(int j = 0; j < edges.size(); j++)
+//		{
+//			DefaultWeightedEdge e = myGraph.addEdge(edges.get(j).getPointA(), edges.get(j).getPointB());
+//			myGraph.setEdgeWeight(e, edges.get(j).getDistance());
+//		}
+		
+		
+//		DefaultWeightedEdge e1 = myGraph.addEdge(edges.get(0).getPointA(), edges.get(0).getPointB());		
 		DefaultWeightedEdge e1 = myGraph.addEdge(customerList.get(0), customerList.get(4));
+		
 		DefaultWeightedEdge e2 = myGraph.addEdge(customerList.get(1), customerList.get(3));
 		DefaultWeightedEdge e3 = myGraph.addEdge(customerList.get(2), customerList.get(3));
 		DefaultWeightedEdge e4 = myGraph.addEdge(customerList.get(4), customerList.get(5));
