@@ -28,10 +28,37 @@ public class RouteCtr {
 		ArrayList<Customer> customerList = cCtr.findAllCustomers(); 
 		ArrayList<Edge> edges = dbe.findAllEdges();
 		
-		for(int i = 0; i < customerList.size(); i++)
+		for(int i = 0; i<edges.size();i++)
 		{
-			myGraph.addVertex(customerList.get(i));
+			Customer a = edges.get(i).getPointA();
+			Customer b = edges.get(i).getPointB();
+			if(!myGraph.containsVertex(a))
+			{
+				myGraph.addVertex(a);
+				System.out.println(a.getName());
+			}
+			if(!myGraph.containsVertex(b))
+			{
+				myGraph.addVertex(b);
+				System.out.println(b.getName());
+			}
+			
 		}
+		
+		
+		
+		
+		
+		
+		
+		
+//		for(int i = 0; i < customerList.size(); i++)
+//		{
+//			myGraph.addVertex(customerList.get(i));
+//		}
+		
+		
+		
 		
 		
 		System.out.println("\ncustomers");
@@ -46,49 +73,52 @@ public class RouteCtr {
 		}
 		
 		
-//		for(int j = 0; j < edges.size(); j++)
-//		{
-//			DefaultWeightedEdge e = myGraph.addEdge(edges.get(j).getPointA(), edges.get(j).getPointB());
-//			myGraph.setEdgeWeight(e, edges.get(j).getDistance());
-//		}
+		for(int j = 0; j < edges.size(); j++)
+		{
+			DefaultWeightedEdge e = myGraph.addEdge(edges.get(j).getPointA(), edges.get(j).getPointB());
+			myGraph.setEdgeWeight(e, edges.get(j).getDistance());
+		}
 		
 		
 //		DefaultWeightedEdge e1 = myGraph.addEdge(edges.get(0).getPointA(), edges.get(0).getPointB());		
-		DefaultWeightedEdge e1 = myGraph.addEdge(customerList.get(0), customerList.get(4));
+//		DefaultWeightedEdge e1 = myGraph.addEdge(customerList.get(0), customerList.get(4));
+//		
+//		DefaultWeightedEdge e2 = myGraph.addEdge(customerList.get(1), customerList.get(3));
+//		DefaultWeightedEdge e3 = myGraph.addEdge(customerList.get(2), customerList.get(3));
+//		DefaultWeightedEdge e4 = myGraph.addEdge(customerList.get(4), customerList.get(5));
+//		DefaultWeightedEdge e5 = myGraph.addEdge(customerList.get(5), customerList.get(6));
+//		DefaultWeightedEdge e6 = myGraph.addEdge(customerList.get(5), customerList.get(10));
+//		DefaultWeightedEdge e7 = myGraph.addEdge(customerList.get(6), customerList.get(7));
+//		DefaultWeightedEdge e8 = myGraph.addEdge(customerList.get(6), customerList.get(9));
+//		DefaultWeightedEdge e9 = myGraph.addEdge(customerList.get(6), customerList.get(11));
+//		DefaultWeightedEdge e10 = myGraph.addEdge(customerList.get(7), customerList.get(2));
+//		DefaultWeightedEdge e11 = myGraph.addEdge(customerList.get(7), customerList.get(8));
+//		DefaultWeightedEdge e12 = myGraph.addEdge(customerList.get(8), customerList.get(9));
+//		DefaultWeightedEdge e13 = myGraph.addEdge(customerList.get(10), customerList.get(2));
+//		DefaultWeightedEdge e14 = myGraph.addEdge(customerList.get(10), customerList.get(11));
+//		DefaultWeightedEdge e15 = myGraph.addEdge(customerList.get(11), customerList.get(1));
 		
-		DefaultWeightedEdge e2 = myGraph.addEdge(customerList.get(1), customerList.get(3));
-		DefaultWeightedEdge e3 = myGraph.addEdge(customerList.get(2), customerList.get(3));
-		DefaultWeightedEdge e4 = myGraph.addEdge(customerList.get(4), customerList.get(5));
-		DefaultWeightedEdge e5 = myGraph.addEdge(customerList.get(5), customerList.get(6));
-		DefaultWeightedEdge e6 = myGraph.addEdge(customerList.get(5), customerList.get(10));
-		DefaultWeightedEdge e7 = myGraph.addEdge(customerList.get(6), customerList.get(7));
-		DefaultWeightedEdge e8 = myGraph.addEdge(customerList.get(6), customerList.get(9));
-		DefaultWeightedEdge e9 = myGraph.addEdge(customerList.get(6), customerList.get(11));
-		DefaultWeightedEdge e10 = myGraph.addEdge(customerList.get(7), customerList.get(2));
-		DefaultWeightedEdge e11 = myGraph.addEdge(customerList.get(7), customerList.get(8));
-		DefaultWeightedEdge e12 = myGraph.addEdge(customerList.get(8), customerList.get(9));
-		DefaultWeightedEdge e13 = myGraph.addEdge(customerList.get(10), customerList.get(2));
-		DefaultWeightedEdge e14 = myGraph.addEdge(customerList.get(10), customerList.get(11));
-		DefaultWeightedEdge e15 = myGraph.addEdge(customerList.get(11), customerList.get(1));
+//		myGraph.setEdgeWeight(e1, edges.get(0).getDistance());
+//		myGraph.setEdgeWeight(e2, edges.get(1).getDistance());
+//		myGraph.setEdgeWeight(e3, edges.get(2).getDistance());
+//		myGraph.setEdgeWeight(e4, edges.get(3).getDistance());
+//		myGraph.setEdgeWeight(e5, edges.get(4).getDistance());
+//		myGraph.setEdgeWeight(e6, edges.get(5).getDistance());
+//		myGraph.setEdgeWeight(e7, edges.get(6).getDistance());
+//		myGraph.setEdgeWeight(e8, edges.get(7).getDistance());
+//		myGraph.setEdgeWeight(e9, edges.get(8).getDistance());
+//		myGraph.setEdgeWeight(e10, edges.get(9).getDistance());
+//		myGraph.setEdgeWeight(e11, edges.get(10).getDistance());
+//		myGraph.setEdgeWeight(e12, edges.get(11).getDistance());
+//		myGraph.setEdgeWeight(e13, edges.get(12).getDistance());
+//		myGraph.setEdgeWeight(e14, edges.get(13).getDistance());
+//		myGraph.setEdgeWeight(e15, edges.get(14).getDistance());
 		
-		myGraph.setEdgeWeight(e1, edges.get(0).getDistance());
-		myGraph.setEdgeWeight(e2, edges.get(1).getDistance());
-		myGraph.setEdgeWeight(e3, edges.get(2).getDistance());
-		myGraph.setEdgeWeight(e4, edges.get(3).getDistance());
-		myGraph.setEdgeWeight(e5, edges.get(4).getDistance());
-		myGraph.setEdgeWeight(e6, edges.get(5).getDistance());
-		myGraph.setEdgeWeight(e7, edges.get(6).getDistance());
-		myGraph.setEdgeWeight(e8, edges.get(7).getDistance());
-		myGraph.setEdgeWeight(e9, edges.get(8).getDistance());
-		myGraph.setEdgeWeight(e10, edges.get(9).getDistance());
-		myGraph.setEdgeWeight(e11, edges.get(10).getDistance());
-		myGraph.setEdgeWeight(e12, edges.get(11).getDistance());
-		myGraph.setEdgeWeight(e13, edges.get(12).getDistance());
-		myGraph.setEdgeWeight(e14, edges.get(13).getDistance());
-		myGraph.setEdgeWeight(e15, edges.get(14).getDistance());
+//		DijkstraShortestPath<Customer, DefaultWeightedEdge> dijk = new DijkstraShortestPath<>(myGraph, customerList.get(0), customerList.get(1));
 		
-		DijkstraShortestPath<Customer, DefaultWeightedEdge> dijk = new DijkstraShortestPath<>(myGraph, customerList.get(0), customerList.get(1));
-
+		System.out.println(edges.get(0).getPointA().getName() + edges.get(1).getPointB().getName());
+		
+		DijkstraShortestPath<Customer, DefaultWeightedEdge> dijk = new DijkstraShortestPath<>(myGraph, edges.get(0).getPointA(), edges.get(0).getPointB());
 		//Shortest path and the list of edges visited is retrieved from the dijkstras object
 		Double shortestPath = dijk.getPathLength();
 		List<DefaultWeightedEdge> edgeList = dijk.getPathEdgeList();
