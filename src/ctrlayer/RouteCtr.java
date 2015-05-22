@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import dblayer.*;
 import modellayer.*;
 
+import org.jgraph.JGraph;
 import org.jgrapht.alg.DijkstraShortestPath;
+import org.jgrapht.ext.JGraphModelAdapter;
 import org.jgrapht.graph.*;
 
 import java.util.List;
+
+import javax.swing.JFrame;
 
 public class RouteCtr {
 	
@@ -19,7 +23,7 @@ public class RouteCtr {
 		dbe = new DBEdge();
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		cCtr = new CustomerCtr();
 		dbe = new DBEdge();
 		ListenableUndirectedWeightedGraph<Customer, DefaultWeightedEdge> myGraph = 
@@ -28,22 +32,44 @@ public class RouteCtr {
 		ArrayList<Customer> customerList = cCtr.findAllCustomers(); 
 		ArrayList<Edge> edges = dbe.findAllEdges();
 		
-		for(int i = 0; i<edges.size();i++)
-		{
-			Customer a = edges.get(i).getPointA();
-			Customer b = edges.get(i).getPointB();
-			if(!myGraph.containsVertex(a))
-			{
-				myGraph.addVertex(a);
-				System.out.println(a.getName());
-			}
-			if(!myGraph.containsVertex(b))
-			{
-				myGraph.addVertex(b);
-				System.out.println(b.getName());
-			}
-			
+		System.out.println(customerList);
+		System.out.println(edges);
+		
+		for( Customer cust :customerList){
+			myGraph.addVertex(cust);
+			System.out.println("The following customer was added as a vertex:" +cust.getName());
 		}
+		
+		for( Edge edge :edges){
+			Customer cus1 =  edge.getPointA();
+			Customer cus2 = edge.getPointB();
+			double weight = edge.getDistance();
+			DefaultWeightedEdge curEdge = myGraph.addEdge(cus1,cus2);
+			myGraph.setEdgeWeight(curEdge, weight);
+		}
+		JFrame frame = new JFrame();
+		frame.setSize(800, 800);
+		JGraph jgraph = new JGraph( new JGraphModelAdapter( myGraph ) );
+		frame.getContentPane().add(jgraph);
+		frame.setVisible(true);
+		while (true){
+			Thread.sleep(2000);
+		}
+	}
+		
+		
+//		for(Edge edge : edges)
+//		{
+//			Customer a = edge.getPointA();
+//			Customer b = edge.getPointB();
+//			
+//			myGraph.addVertex(a);
+//			System.out.println(a.getName());
+//
+//			myGraph.addVertex(b);
+//			System.out.println(b.getName());
+//			
+//		}
 		
 		
 		
@@ -61,23 +87,23 @@ public class RouteCtr {
 		
 		
 		
-		System.out.println("\ncustomers");
-		for(int i = 0; i < customerList.size(); i++)
-		{
-			System.out.println(customerList.get(i).getName());
-		}
-		System.out.println("\nedges");
-		for(int i = 0; i < edges.size(); i++)
-		{
-			System.out.println(edges.get(i).getPointA().getName() + " -> " + edges.get(i).getPointB().getName());
-		}
-		
-		
-		for(int j = 0; j < edges.size(); j++)
-		{
-			DefaultWeightedEdge e = myGraph.addEdge(edges.get(j).getPointA(), edges.get(j).getPointB());
-			myGraph.setEdgeWeight(e, edges.get(j).getDistance());
-		}
+//		System.out.println("\ncustomers");
+//		for(int i = 0; i < customerList.size(); i++)
+//		{
+//			System.out.println(customerList.get(i).getName());
+//		}
+//		System.out.println("\nedges");
+//		for(int i = 0; i < edges.size(); i++)
+//		{
+//			System.out.println(edges.get(i).getPointA().getName() + " -> " + edges.get(i).getPointB().getName());
+//		}
+//		
+//		
+//		for(int j = 0; j < edges.size(); j++)
+//		{
+//			DefaultWeightedEdge e = myGraph.addEdge(edges.get(j).getPointA(), edges.get(j).getPointB());
+//			myGraph.setEdgeWeight(e, edges.get(j).getDistance());
+//		}
 		
 		
 //		DefaultWeightedEdge e1 = myGraph.addEdge(edges.get(0).getPointA(), edges.get(0).getPointB());		
@@ -116,26 +142,26 @@ public class RouteCtr {
 		
 //		DijkstraShortestPath<Customer, DefaultWeightedEdge> dijk = new DijkstraShortestPath<>(myGraph, customerList.get(0), customerList.get(1));
 		
-		System.out.println(edges.get(0).getPointA().getName() + edges.get(1).getPointB().getName());
-		
-		DijkstraShortestPath<Customer, DefaultWeightedEdge> dijk = new DijkstraShortestPath<>(myGraph, edges.get(0).getPointA(), edges.get(0).getPointB());
-		//Shortest path and the list of edges visited is retrieved from the dijkstras object
-		Double shortestPath = dijk.getPathLength();
-		List<DefaultWeightedEdge> edgeList = dijk.getPathEdgeList();
-
-		//Prints out the length of the shortest path
-		System.out.println("\nThe shortest path found has length: " + shortestPath);
-
-		//Prints out the shortest route
-		System.out.println("The following route was found to be the shortest:");
-
-		for(DefaultWeightedEdge edge : edgeList){
-			System.out.println(edge);
-		}
-		System.out.println("");
-		System.out.println(dijk);
-		
-	}
+//		System.out.println(edges.get(0).getPointA().getName() + edges.get(1).getPointB().getName());
+//		
+//		DijkstraShortestPath<Customer, DefaultWeightedEdge> dijk = new DijkstraShortestPath<>(myGraph, edges.get(0).getPointA(), edges.get(0).getPointB());
+//		//Shortest path and the list of edges visited is retrieved from the dijkstras object
+//		Double shortestPath = dijk.getPathLength();
+//		List<DefaultWeightedEdge> edgeList = dijk.getPathEdgeList();
+//
+//		//Prints out the length of the shortest path
+//		System.out.println("\nThe shortest path found has length: " + shortestPath);
+//
+//		//Prints out the shortest route
+//		System.out.println("The following route was found to be the shortest:");
+//
+//		for(DefaultWeightedEdge edge : edgeList){
+//			System.out.println(edge);
+//		}
+//		System.out.println("");
+//		System.out.println(dijk);
+//		
+//	}
 	
 	public static ArrayList<Customer> createRoute() // should take 2 Customers
 	{
