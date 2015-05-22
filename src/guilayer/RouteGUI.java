@@ -131,7 +131,12 @@ public class RouteGUI extends JFrame {
 		panel.add(btnFjernDestination);
 		
 		btnOpretRute = new JButton("Opret rute");
-		btnOpretRute.setBounds(254, 423, 89, 23);
+		btnOpretRute.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				createListOfCustomers();
+			}
+		});
+		btnOpretRute.setBounds(254, 423, 145, 23);
 		panel.add(btnOpretRute);
 
 
@@ -178,10 +183,13 @@ public class RouteGUI extends JFrame {
 	private void addCustomerToModelAdded()
 	{
 		int row = table.getSelectedRow();
+		if(row > 0)
+		{
 		String phone = (String) table.getValueAt(row, 4);
 		Customer cus = cCtr.findByPhoneNo(phone);
 		modelAdded.addRow(new Object[]{cus.getName(), cus.getAddress(), cus.getZipCode(),
 				cus.getLocation().getCity(), cus.getPhone(), cus.getEmail()});
+		}
 	}
 	
 	private void deleteCustomerFromModel()
@@ -193,14 +201,34 @@ public class RouteGUI extends JFrame {
 	private void removeDestFromModelAdded()
 	{
 		int row = tableAdded.getSelectedRow();
+		if(row > 0)
+		{
 		String phone = (String) tableAdded.getValueAt(row, 4);
 		Customer cus = cCtr.findByPhoneNo(phone);		
 		modelAdded.removeRow(row);
 		model.addRow(new Object[]{cus.getName(), cus.getAddress(), cus.getZipCode(),
 				cus.getLocation().getCity(), cus.getPhone(), cus.getEmail()});
+		}
 	}
 	
-	
+	private ArrayList<Customer> createListOfCustomers()
+	{
+		ArrayList<Customer> cusList = new ArrayList<Customer>();
+		int rowCount = modelAdded.getRowCount();
+		for (int i = rowCount - 1; i >= 0; i--) 
+		{
+			String phone = (String) tableAdded.getValueAt(0, 4);
+			Customer cus = cCtr.findByPhoneNo(phone);
+			cusList.add(cus);
+			modelAdded.removeRow(0);
+		}	
+		for(Customer cus : cusList)
+		{
+			System.out.println(cus.getName());
+		}
+		findAllCustomers(model);
+		return cusList;
+	}
 	
 	
 	
