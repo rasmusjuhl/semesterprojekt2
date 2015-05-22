@@ -5,6 +5,7 @@ import java.util.List;
 public class Route {
 	
 	private String date;
+	private User user;
 	private List<Step> routeSteps;
 
 	public Route() {
@@ -30,6 +31,16 @@ public class Route {
 
 	public void setRouteSteps(List<Step> routeSteps) {
 		this.routeSteps = routeSteps;
+	}
+	
+	public User getUser()
+	{
+		return user;
+	}
+	
+	public void setUser(User user)
+	{
+		this.user = user;
 	}
 
 	
