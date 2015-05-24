@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -20,6 +21,7 @@ import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JProgressBar;
 
 public class RouteGUI extends JFrame {
@@ -42,6 +44,7 @@ public class RouteGUI extends JFrame {
 	private DefaultTableModel modelRoute;
 
 	private JTable tableRoute;
+	private JProgressBar progressBar;
 
 	/**
 	 * Launch the application.
@@ -153,11 +156,17 @@ public class RouteGUI extends JFrame {
 		btnOpretRute.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addToPanelRoute(createListOfCustomers());
-				changePanel();
+				Working work = new Working();
+				work.worker.execute();
+//				changePanel();
 			}
 		});
 		btnOpretRute.setBounds(20, 423, 145, 23);
 		panel.add(btnOpretRute);
+		
+		progressBar = new JProgressBar();
+		progressBar.setBounds(20, 457, 146, 14);
+		panel.add(progressBar);
 		//Slut panel
 
 		//Start route panel
@@ -295,5 +304,25 @@ public class RouteGUI extends JFrame {
 			modelRoute.addRow(new Object[]{Integer.toString(i+1), cusList.get(i).getName(), cusList.get(i).getAddress(), cusList.get(i).getZipCode(),
 					cusList.get(i).getLocation().getCity(), cusList.get(i).getPhone(), cusList.get(i).getEmail()});
 		}
+	}
+	
+	private class Working 
+	{
+		public SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>()
+				{
+			@Override
+			protected Boolean doInBackground() throws Exception
+			{
+				progressBar.setMaximum(30);
+				for (int i = 0; i <= 30; i++) 
+				{
+					progressBar.setValue(i);
+					Thread.sleep(200);					
+				}
+				changePanel();
+				return false;
+			}
+
+				};
 	}
 }
