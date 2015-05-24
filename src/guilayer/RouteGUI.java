@@ -20,6 +20,7 @@ import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JProgressBar;
 
 public class RouteGUI extends JFrame {
 	private CustomerCtr cCtr;
@@ -151,9 +152,8 @@ public class RouteGUI extends JFrame {
 		btnOpretRute = new JButton("Opret rute");
 		btnOpretRute.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ArrayList<Customer> list = createListOfCustomers();
+				addToPanelRoute(createListOfCustomers());
 				changePanel();
-				addToPanelRoute(list);
 			}
 		});
 		btnOpretRute.setBounds(20, 423, 145, 23);
@@ -296,6 +296,4 @@ public class RouteGUI extends JFrame {
 					cusList.get(i).getLocation().getCity(), cusList.get(i).getPhone(), cusList.get(i).getEmail()});
 		}
 	}
-	
-	
 }
