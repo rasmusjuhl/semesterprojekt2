@@ -3,6 +3,7 @@ import ctrlayer.*;
 import dblayer.*;
 import modellayer.*;
 
+import java.sql.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.awt.EventQueue;
@@ -71,7 +72,7 @@ public class CustomerGUI extends JFrame {
 	private JButton btnSlet;
 	private JLabel lblBy;
 	private JLabel lblKundeOprettet;
-	private JProgressBar progressBar;
+	private JLabel lblForbindelse;
 
 
 	/**
@@ -301,10 +302,6 @@ public class CustomerGUI extends JFrame {
 		lblKundeOprettet.setBounds(10, 170, 418, 14);
 		panelOpret.add(lblKundeOprettet);
 		lblKundeOprettet.setVisible(false);
-
-
-
-
 		//END Opret kunde panel
 
 		//START Ret/slet kunde panel
@@ -347,23 +344,16 @@ public class CustomerGUI extends JFrame {
 		});
 		btnSlet.setBounds(109, 341, 89, 23);
 		panelRet.add(btnSlet);
-		//END Ret/slet kunde panel
+		
+		
+		
+		lblForbindelse = new JLabel("");
+		lblForbindelse.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		lblForbindelse.setBounds(10, 597, 146, 14);
+		contentPane.add(lblForbindelse);
 
-		progressBar = new JProgressBar();
-		progressBar.setBounds(10, 248, 146, 14);
-		contentPane.add(progressBar);
-
-		JButton btnStart = new JButton("start");
-		btnStart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				CheckOnline co = new CheckOnline();
-				co.worker.execute();
-			}
-		});
-		btnStart.setBounds(30, 318, 89, 23);
-		contentPane.add(btnStart);
-
-
+		CheckOnline co = new CheckOnline();
+		co.worker.execute();
 
 
 		panelRet.setVisible(false);
@@ -604,20 +594,27 @@ public class CustomerGUI extends JFrame {
 
 	}
 
-	private class CheckOnline //extends SwingWorker<Boolean, Void>
+	private class CheckOnline 
 	{
 		public SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>()
 				{
-			@Override
+			
+			@Override			
 			protected Boolean doInBackground() throws Exception
-			{
-				progressBar.setMaximum(100);
-				for (int i = 0; i < 100; i++) 
+			{			
+				while(true)
 				{
-					progressBar.setValue(i);
-					Thread.sleep(200);
+					DBConnection dbCon = DBConnection.getInstance();
+					if(dbCon.getDBcon() != null)
+					{
+						lblForbindelse.setText("Forbindelse til DB: Oprettet");
+					}
+					else
+					{
+						lblForbindelse.setText("Forbindelse til DB: Mistet");
+					}
+					Thread.sleep(100);
 				}
-				return false;
 			}
 
 				};
