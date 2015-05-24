@@ -73,6 +73,7 @@ public class CustomerGUI extends JFrame {
 	private JLabel lblBy;
 	private JLabel lblKundeOprettet;
 	private JLabel lblForbindelse;
+	private JProgressBar progressBar;
 
 
 	/**
@@ -351,6 +352,11 @@ public class CustomerGUI extends JFrame {
 		lblForbindelse.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblForbindelse.setBounds(10, 597, 146, 14);
 		contentPane.add(lblForbindelse);
+		
+		progressBar = new JProgressBar();
+		progressBar.setBounds(10, 572, 146, 14);
+		contentPane.add(progressBar);
+		progressBar.setMaximum(50);
 
 		CheckOnline co = new CheckOnline();
 		co.worker.execute();
@@ -602,19 +608,31 @@ public class CustomerGUI extends JFrame {
 			@Override			
 			protected Boolean doInBackground() throws Exception
 			{			
-				while(true)
+				for(int i = 0; i <= 50; i++)
 				{
-					DBConnection dbCon = DBConnection.getInstance();
-					if(dbCon.getDBcon() != null)
+					progressBar.setValue(i);
+					if(i == 50)
 					{
-						lblForbindelse.setText("Forbindelse til DB: Oprettet");
+						i = 0;
 					}
-					else
-					{
-						lblForbindelse.setText("Forbindelse til DB: Mistet");
-					}
-					Thread.sleep(5000);
+					Thread.sleep(100);
+					
 				}
+				
+//				while(true)
+//				{
+//					DBConnection dbCon = DBConnection.getInstance();
+//					if(dbCon.getDBcon() != null)
+//					{
+//						lblForbindelse.setText("Forbindelse til DB: Oprettet");
+//					}
+//					else
+//					{
+//						lblForbindelse.setText("Forbindelse til DB: Mistet");
+//					}
+//					Thread.sleep(5000);
+//				}
+				return false;
 			}
 
 				};
