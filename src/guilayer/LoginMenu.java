@@ -130,6 +130,11 @@ public class LoginMenu extends JFrame {
 						mGUI.main(null);
 						dispose();
 					}
+					else
+					{
+						lblStatus.setVisible(true);
+						txtPassword.setText("");
+					}
 				}
 			}
 		});
