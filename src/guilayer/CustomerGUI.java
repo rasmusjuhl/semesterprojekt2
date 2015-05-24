@@ -144,7 +144,9 @@ public class CustomerGUI extends JFrame {
 		btnRetKunde.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				panelRetKunde();
-				findAllCustomers(modelRet);				
+				FillTableRet ftr = new FillTableRet();
+				ftr.worker.execute();
+//				findAllCustomers(modelRet);				
 			}
 		});
 		btnRetKunde.setBounds(10, 133, 146, 50);
@@ -195,7 +197,7 @@ public class CustomerGUI extends JFrame {
 		JButton btnFindAlle = new JButton("Find alle");
 		btnFindAlle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				findAllCustomers(model);
+				findAllCustomersFind();
 			}
 		});
 		btnFindAlle.setBounds(120, 36, 89, 23);
@@ -400,9 +402,16 @@ public class CustomerGUI extends JFrame {
 		dmodel.addRow(new Object[]{cus.getName(),cus.getAddress(),cus.getZipCode(),cus.getLocation().getCity(),cus.getPhone(),cus.getEmail()});
 	}
 
+	public void findAllCustomersFind()
+	{
+		FillTable ft = new FillTable();
+		ft.worker.execute();
+	}
+	
 	public void findAllCustomers(DefaultTableModel dmodel)
 	{
 		sletTabel(dmodel);
+		
 		ArrayList<Customer> list = new ArrayList<Customer>();
 		list = cusCtr.findAllCustomers();
 		for(int i = 0; i < list.size(); i++)
@@ -600,11 +609,57 @@ public class CustomerGUI extends JFrame {
 
 	}
 
+	private class FillTable
+	{
+		public SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>()
+				{
+
+			@Override			
+			protected Boolean doInBackground() throws Exception
+			{			
+				ArrayList<Customer> list = new ArrayList<Customer>();
+				list = cusCtr.findAllCustomers();
+				for(int i = 0; i < list.size(); i++)
+				{
+					model.addRow(new Object[]{list.get(i).getName(), list.get(i).getAddress(), list.get(i).getZipCode(),
+							list.get(i).getLocation().getCity(), list.get(i).getPhone(), list.get(i).getEmail()});
+				}
+				
+				return false;
+			}
+
+				};
+		
+	}
+	
+	private class FillTableRet
+	{
+		public SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>()
+				{
+
+			@Override			
+			protected Boolean doInBackground() throws Exception
+			{			
+				ArrayList<Customer> list = new ArrayList<Customer>();
+				list = cusCtr.findAllCustomers();
+				for(int i = 0; i < list.size(); i++)
+				{
+					modelRet.addRow(new Object[]{list.get(i).getName(), list.get(i).getAddress(), list.get(i).getZipCode(),
+							list.get(i).getLocation().getCity(), list.get(i).getPhone(), list.get(i).getEmail()});
+				}
+				
+				return false;
+			}
+
+				};
+		
+	}
+
 	private class CheckOnline 
 	{
 		public SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>()
 				{
-			
+
 			@Override			
 			protected Boolean doInBackground() throws Exception
 			{			
