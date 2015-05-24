@@ -613,7 +613,7 @@ public class CustomerGUI extends JFrame {
 					{
 						lblForbindelse.setText("Forbindelse til DB: Mistet");
 					}
-					Thread.sleep(1000);
+					Thread.sleep(5000);
 				}
 			}
 
