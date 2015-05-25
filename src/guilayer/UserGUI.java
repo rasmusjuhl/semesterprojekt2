@@ -80,10 +80,19 @@ public class UserGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public UserGUI() 
+	private UserGUI() 
 	{
 		userCtr = new UserCtr();
 		initComponents();
+	}
+	
+	public static UserGUI getInstance()
+	{
+		if(frame == null)
+		{
+			frame = new UserGUI();
+		}
+		return frame;
 	}
 	
 	public void initComponents()
