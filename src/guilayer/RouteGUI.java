@@ -46,6 +46,7 @@ public class RouteGUI extends JFrame {
 	private JProgressBar progressBar;
 	private JButton btnTilbage;
 	private static RouteGUI frame;
+	private User user;
 
 	/**
 	 * Launch the application.
@@ -67,6 +68,10 @@ public class RouteGUI extends JFrame {
 	 * Create the frame.
 	 */
 	private RouteGUI() {
+		if(user == null)
+		{
+			user = LoginMenu.getInstance().getUser();
+		}
 		cCtr = new CustomerCtr();
 		initComponents();
 		findAllCustomers(model);
@@ -84,7 +89,7 @@ public class RouteGUI extends JFrame {
 
 	public void initComponents()
 	{
-		setTitle("RouteGUI");
+		setTitle("Rute menu - logget ind som " + user.getName());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1028, 660);
 		contentPane = new JPanel();

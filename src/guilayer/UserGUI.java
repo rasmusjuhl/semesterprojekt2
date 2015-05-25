@@ -53,6 +53,7 @@ public class UserGUI extends JFrame {
 	private JPasswordField passwordField;
 	private static UserGUI frame;
 	private JButton btnTilbage;
+	private User user;
 
 
 	/**
@@ -82,6 +83,10 @@ public class UserGUI extends JFrame {
 	 */
 	private UserGUI() 
 	{
+		if(user == null)
+		{
+			user = LoginMenu.getInstance().getUser();
+		}
 		userCtr = new UserCtr();
 		initComponents();
 	}
@@ -97,7 +102,7 @@ public class UserGUI extends JFrame {
 	
 	public void initComponents()
 	{
-		setTitle("User GUI");
+		setTitle("Bruger menu - logget ind som " + user.getName());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1028, 660);
 		contentPane = new JPanel();
