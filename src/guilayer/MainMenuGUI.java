@@ -1,5 +1,4 @@
 package guilayer;
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +19,7 @@ public class MainMenuGUI extends JFrame {
 	private LoginMenu lMenu;
 	private static MainMenuGUI frame;
 	private User user;
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -41,9 +40,11 @@ public class MainMenuGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public MainMenuGUI() {
-		uGUI = new UserGUI();
-		
-//		setTitle("Main menu - logget ind som " + user.getName());
+		if(user == null)
+		{
+			user = LoginMenu.getInstance().getUser();
+		}
+		setTitle("Main menu - logget ind som " + user.getName());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 663, 407);
 		contentPane = new JPanel();
