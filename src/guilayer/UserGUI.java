@@ -346,7 +346,7 @@ public class UserGUI extends JFrame {
 	private void checkEmail()
 	{
 		String email = txtEmail.getText();
-		String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$";
+		String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}{5,50}$";
 
 		Pattern patEmail = Pattern.compile(emailPattern);
 		Matcher m = patEmail.matcher(email);
@@ -388,7 +388,7 @@ public class UserGUI extends JFrame {
 		Pattern patPassword = Pattern.compile(passwordPattern);
 		Matcher p = patPassword.matcher(password);
 
-		if(p.find()) // check phone
+		if(p.find()) // check password
 		{
 			checkName();
 		}
