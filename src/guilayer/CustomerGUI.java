@@ -619,6 +619,7 @@ public class CustomerGUI extends JFrame {
 			{			
 				ArrayList<Customer> list = new ArrayList<Customer>();
 				list = cusCtr.findAllCustomers();
+				sletTabel(model);
 				for(int i = 0; i < list.size(); i++)
 				{
 					model.addRow(new Object[]{list.get(i).getName(), list.get(i).getAddress(), list.get(i).getZipCode(),
@@ -642,6 +643,7 @@ public class CustomerGUI extends JFrame {
 			{			
 				ArrayList<Customer> list = new ArrayList<Customer>();
 				list = cusCtr.findAllCustomers();
+				sletTabel(modelRet);
 				for(int i = 0; i < list.size(); i++)
 				{
 					modelRet.addRow(new Object[]{list.get(i).getName(), list.get(i).getAddress(), list.get(i).getZipCode(),
