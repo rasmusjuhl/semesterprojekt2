@@ -39,11 +39,26 @@ public class MainMenuGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MainMenuGUI() {
+	private MainMenuGUI() {
 		if(user == null)
 		{
 			user = LoginMenu.getInstance().getUser();
 		}
+		initComponents();
+
+	}	
+	
+	public static MainMenuGUI getInstance()
+	{
+		if(frame == null)
+		{
+			frame = new MainMenuGUI();
+		}
+		return frame;
+	}
+	
+	private void initComponents()
+	{
 		setTitle("Main menu - logget ind som " + user.getName());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 663, 407);
@@ -91,6 +106,5 @@ public class MainMenuGUI extends JFrame {
 		});
 		btnLogUd.setBounds(51, 176, 146, 75);
 		contentPane.add(btnLogUd);
-
-	}	
+	}
 }
