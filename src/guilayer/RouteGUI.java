@@ -18,8 +18,10 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JProgressBar;
 
 
@@ -64,11 +66,21 @@ public class RouteGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public RouteGUI() {
+	private RouteGUI() {
 		cCtr = new CustomerCtr();
 		initComponents();
 		findAllCustomers(model);
 	}
+	
+	public static RouteGUI getInstance()
+	{
+		if(frame == null)
+		{
+			frame = new RouteGUI();
+		}
+		return frame;
+	}
+	
 
 	public void initComponents()
 	{
