@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
@@ -132,7 +133,9 @@ public class UserGUI extends JFrame {
 		btnRetBruger.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				panelRetBruger();
-				findAllUsers(modelRet);				
+				sletTabel(modelRet);
+				FillTableRet ftr = new FillTableRet();
+				ftr.worker.execute();
 			}
 		});
 		btnRetBruger.setBounds(10, 133, 146, 50);
@@ -209,7 +212,9 @@ public class UserGUI extends JFrame {
 		JButton btnFindAlle = new JButton("Find alle");
 		btnFindAlle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				findAllUsers(model);
+				sletTabel(model);
+				FillTableAllUsers ftau = new FillTableAllUsers();
+				ftau.worker.execute();
 			}
 		});
 		btnFindAlle.setBounds(120, 36, 89, 23);
@@ -398,5 +403,47 @@ public class UserGUI extends JFrame {
 			userCtr.deleteUser(phone);
 			sletTabel(modelRet);
 		}
+	}
+	
+	private class FillTableAllUsers
+	{
+		public SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>()
+				{
+
+			@Override			
+			protected Boolean doInBackground() throws Exception
+			{			
+				ArrayList<User> list = new ArrayList<User>();
+				list = userCtr.findAlleUsers();
+				for(int i = 0; i < list.size(); i++)
+				{
+					model.addRow(new Object[]{list.get(i).getName(), list.get(i).getPhone(), list.get(i).getEmail()});
+				}
+				return false;
+			}
+
+				};
+		
+	}
+	
+	private class FillTableRet
+	{
+		public SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>()
+				{
+
+			@Override			
+			protected Boolean doInBackground() throws Exception
+			{			
+				ArrayList<User> list = new ArrayList<User>();
+				list = userCtr.findAlleUsers();
+				for(int i = 0; i < list.size(); i++)
+				{
+					modelRet.addRow(new Object[]{list.get(i).getName(), list.get(i).getPhone(), list.get(i).getEmail()});
+				}
+				return false;
+			}
+
+				};
+		
 	}
 }
