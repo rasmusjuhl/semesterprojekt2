@@ -51,6 +51,8 @@ public class UserGUI extends JFrame {
 	private JScrollPane scrollPane;
 	private JButton btnSlet;
 	private JPasswordField passwordField;
+	private static UserGUI frame;
+	private JButton btnTilbage;
 
 
 	/**
@@ -64,7 +66,7 @@ public class UserGUI extends JFrame {
 			{
 				try 
 				{
-					UserGUI frame = new UserGUI();
+					frame = new UserGUI();
 					frame.setVisible(true);
 				} 
 				catch (Exception e) 
@@ -276,6 +278,16 @@ public class UserGUI extends JFrame {
 		});
 		btnSlet.setBounds(109, 341, 89, 23);
 		panelRet.add(btnSlet);
+		
+		btnTilbage = new JButton("Tilbage");
+		btnTilbage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				MainMenuGUI.main(null);	
+			}
+		});
+		btnTilbage.setBounds(10, 194, 146, 50);
+		contentPane.add(btnTilbage);
 		//END Ret kunde panel	
 		
 		panelRet.setVisible(false);
