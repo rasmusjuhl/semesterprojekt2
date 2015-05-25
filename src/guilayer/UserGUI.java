@@ -56,6 +56,7 @@ public class UserGUI extends JFrame {
 	private static UserGUI frame;
 	private JButton btnTilbage;
 	private User user;
+	private JLabel lblOpret;
 
 
 	/**
@@ -279,7 +280,13 @@ public class UserGUI extends JFrame {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(97, 89, 134, 22);
 		panelOpret.add(passwordField);
-		panelOpret.setVisible(false);
+		
+		lblOpret = new JLabel("");
+		lblOpret.setBounds(20, 170, 587, 14);
+		panelOpret.add(lblOpret);
+		lblOpret.setVisible(false);
+		
+		
 		
 		btnRet = new JButton("Ret");
 		btnRet.addActionListener(new ActionListener() {
@@ -350,7 +357,8 @@ public class UserGUI extends JFrame {
 		}
 		else
 		{
-			// lbl
+			lblOpret.setText("Bruger blev ikke oprettet. Email skal være i formattet: navn@mail.dk");
+			lblOpret.setVisible(true);
 		}		
 	}
 	
@@ -369,8 +377,29 @@ public class UserGUI extends JFrame {
 		}
 		else
 		{
-			//lbl
+			lblOpret.setText("Bruger blev ikke oprettet. Telefon nr. skal bestå af tal.");
+			lblOpret.setVisible(true);
 		}		
+	}
+	
+	private void checkPassword()
+	{
+		String password = passwordField.getText();
+		String passwordPattern = "^[a-zA-Z0-9]{4,12}$";
+
+		Pattern patPassword = Pattern.compile(passwordPattern);
+		Matcher p = patPassword.matcher(password);
+
+		if(p.find()) // check phone
+		{
+			insertUser();	
+			clearFieldsOpret();
+		}
+		else
+		{
+			lblOpret.setText("Bruger blev ikke oprettet. Password må kun bestå af bogstaver og tal.");
+			lblOpret.setVisible(true);
+		}
 	}
 	
 	private void clearFieldsOpret()
