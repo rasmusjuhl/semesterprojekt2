@@ -469,11 +469,11 @@ public class UserGUI extends JFrame {
 	{
 		final JFrame parent = new JFrame();
 		int row = tableRet.getSelectedRow();
-		String slet = "Slet kunde: " + (String) tableRet.getValueAt(row, 0);
+		String slet = "Slet bruger: " + (String) tableRet.getValueAt(row, 0);
 		int valg = JOptionPane.showConfirmDialog(parent, "Er du sikker?", slet, JOptionPane.YES_NO_OPTION);
 		if(valg == 0)
 		{
-			String phone = (String) tableRet.getValueAt(row, 4);
+			String phone = (String) tableRet.getValueAt(row, 1);
 			userCtr.deleteUser(phone);
 			sletTabel(modelRet);
 		}
