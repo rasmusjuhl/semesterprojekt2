@@ -371,8 +371,7 @@ public class UserGUI extends JFrame {
 
 		if(p.find()) // check phone
 		{
-			insertUser();	
-			clearFieldsOpret();
+			checkPassword();
 		}
 		else
 		{
@@ -391,12 +390,31 @@ public class UserGUI extends JFrame {
 
 		if(p.find()) // check phone
 		{
+			checkName();
+		}
+		else
+		{
+			lblOpret.setText("Password må kun bestå af bogstaver og tal, og skal være mellem 4 og 12 tegn.");
+			lblOpret.setVisible(true);
+		}
+	}
+	
+	private void checkName()
+	{
+		String name = txtNavn.getText();
+		String namePattern = "^[a-zA-Z]{0,50}$";
+
+		Pattern patName = Pattern.compile(namePattern);
+		Matcher n = patName.matcher(name);
+
+		if(n.find())  // check name
+		{
 			insertUser();	
 			clearFieldsOpret();
 		}
 		else
 		{
-			lblOpret.setText("Bruger blev ikke oprettet. Password må kun bestå af bogstaver og tal.");
+			lblOpret.setText("Navn må max bestå af 50 tegn og bestå af bogstaver.");
 			lblOpret.setVisible(true);
 		}
 	}
