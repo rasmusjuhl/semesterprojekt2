@@ -266,7 +266,6 @@ public class UserGUI extends JFrame {
 		btnOpret.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				checkEmail();
-				insertUser();
 			}
 		});
 		btnOpret.setBounds(10, 136, 89, 23);
