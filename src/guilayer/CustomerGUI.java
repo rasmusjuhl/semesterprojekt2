@@ -3,6 +3,7 @@ import ctrlayer.*;
 import dblayer.*;
 import modellayer.*;
 
+import java.sql.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.awt.EventQueue;
@@ -33,12 +34,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
+import javax.swing.JProgressBar;
+
 public class CustomerGUI extends JFrame {
 
 	private CustomerCtr cusCtr;
 	private static CustomerGUI instance = null;
-	private CheckOnline co;
-	
+
 	private JPanel contentPane;
 	private JTextField txtNavn;
 	private JTextField txtAdresse;
@@ -70,9 +72,9 @@ public class CustomerGUI extends JFrame {
 	private JButton btnSlet;
 	private JLabel lblBy;
 	private JLabel lblKundeOprettet;
-	private JLabel lblStatus;
-	private JLabel lblTal;
-	
+	private JLabel lblForbindelse;
+	private JProgressBar progressBar;
+
 
 	/**
 	 * Launch the application.
@@ -107,8 +109,8 @@ public class CustomerGUI extends JFrame {
 		}
 		return instance;
 	}
-	
-	
+
+
 	public void initComponents()
 	{
 		setTitle("Customer GUI");
@@ -142,7 +144,9 @@ public class CustomerGUI extends JFrame {
 		btnRetKunde.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				panelRetKunde();
-				findAllCustomers(modelRet);				
+				FillTableRet ftr = new FillTableRet();
+				ftr.worker.execute();
+//				findAllCustomers(modelRet);				
 			}
 		});
 		btnRetKunde.setBounds(10, 133, 146, 50);
@@ -193,7 +197,7 @@ public class CustomerGUI extends JFrame {
 		JButton btnFindAlle = new JButton("Find alle");
 		btnFindAlle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				findAllCustomers(model);
+				findAllCustomersFind();
 			}
 		});
 		btnFindAlle.setBounds(120, 36, 89, 23);
@@ -301,32 +305,6 @@ public class CustomerGUI extends JFrame {
 		lblKundeOprettet.setBounds(10, 170, 418, 14);
 		panelOpret.add(lblKundeOprettet);
 		lblKundeOprettet.setVisible(false);
-		
-		lblStatus = new JLabel("Forbundet til DB: ");
-		lblStatus.setBounds(10, 194, 146, 14);
-		contentPane.add(lblStatus);
-		
-		JButton btnExplode = new JButton("Explode");
-		btnExplode.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				for(int i = 0; i < 100; i++)
-				{
-					(co = new CheckOnline()).execute();
-					lblTal.setText(Integer.toString(i));
-				}
-				
-			}
-		});
-		btnExplode.setBounds(40, 315, 89, 23);
-		contentPane.add(btnExplode);
-		
-		lblTal = new JLabel("tal");
-		lblTal.setBounds(20, 219, 46, 14);
-		contentPane.add(lblTal);
-		
-
-
-
 		//END Opret kunde panel
 
 		//START Ret/slet kunde panel
@@ -369,12 +347,21 @@ public class CustomerGUI extends JFrame {
 		});
 		btnSlet.setBounds(109, 341, 89, 23);
 		panelRet.add(btnSlet);
-		//END Ret/slet kunde panel
+		
+		
+		
+		lblForbindelse = new JLabel("");
+		lblForbindelse.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		lblForbindelse.setBounds(10, 597, 146, 14);
+		contentPane.add(lblForbindelse);
+		
+		progressBar = new JProgressBar();
+		progressBar.setBounds(10, 572, 146, 14);
+		contentPane.add(progressBar);
+		progressBar.setMaximum(50);
 
-
-
-
-
+		CheckOnline co = new CheckOnline();
+		co.worker.execute();
 
 
 		panelRet.setVisible(false);
@@ -415,9 +402,16 @@ public class CustomerGUI extends JFrame {
 		dmodel.addRow(new Object[]{cus.getName(),cus.getAddress(),cus.getZipCode(),cus.getLocation().getCity(),cus.getPhone(),cus.getEmail()});
 	}
 
+	public void findAllCustomersFind()
+	{
+		FillTable ft = new FillTable();
+		ft.worker.execute();
+	}
+	
 	public void findAllCustomers(DefaultTableModel dmodel)
 	{
 		sletTabel(dmodel);
+		
 		ArrayList<Customer> list = new ArrayList<Customer>();
 		list = cusCtr.findAllCustomers();
 		for(int i = 0; i < list.size(); i++)
@@ -615,40 +609,87 @@ public class CustomerGUI extends JFrame {
 
 	}
 
-	private class CheckOnline extends SwingWorker<Boolean, Void>
+	private class FillTable
 	{
-        @Override
-        protected Boolean doInBackground() 
-        {
-        	boolean online = false;
-        	DBConnection dbCon = DBConnection.getInstance();
-    		if(dbCon.getDBcon() != null)
-    		{
-    			online = true;
-            }
-            return online;
-        }
- 
-        @Override
-        public void done()
-        {
-        	try 
-        	{
-        		lblStatus.setText("Forbundet til DB: " + get());
-            } 
-        	catch (InterruptedException ignore) 
-        	{}
-            catch (java.util.concurrent.ExecutionException e) 
-        	{
-                String why = null;
-                Throwable cause = e.getCause();
-                if (cause != null) {
-                    why = cause.getMessage();
-                } else {
-                    why = e.getMessage();
-                }
-                System.err.println("Error retrieving file: " + why);
-            }
-        }
-    }
+		public SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>()
+				{
+
+			@Override			
+			protected Boolean doInBackground() throws Exception
+			{			
+				ArrayList<Customer> list = new ArrayList<Customer>();
+				list = cusCtr.findAllCustomers();
+				for(int i = 0; i < list.size(); i++)
+				{
+					model.addRow(new Object[]{list.get(i).getName(), list.get(i).getAddress(), list.get(i).getZipCode(),
+							list.get(i).getLocation().getCity(), list.get(i).getPhone(), list.get(i).getEmail()});
+				}
+				
+				return false;
+			}
+
+				};
+		
+	}
+	
+	private class FillTableRet
+	{
+		public SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>()
+				{
+
+			@Override			
+			protected Boolean doInBackground() throws Exception
+			{			
+				ArrayList<Customer> list = new ArrayList<Customer>();
+				list = cusCtr.findAllCustomers();
+				for(int i = 0; i < list.size(); i++)
+				{
+					modelRet.addRow(new Object[]{list.get(i).getName(), list.get(i).getAddress(), list.get(i).getZipCode(),
+							list.get(i).getLocation().getCity(), list.get(i).getPhone(), list.get(i).getEmail()});
+				}
+				
+				return false;
+			}
+
+				};
+		
+	}
+
+	private class CheckOnline 
+	{
+		public SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>()
+				{
+
+			@Override			
+			protected Boolean doInBackground() throws Exception
+			{			
+				for(int i = 0; i <= 50; i++)
+				{
+					progressBar.setValue(i);
+					if(i == 50)
+					{
+						i = 0;
+					}
+					Thread.sleep(100);
+					
+				}
+				
+//				while(true)
+//				{
+//					DBConnection dbCon = DBConnection.getInstance();
+//					if(dbCon.getDBcon() != null)
+//					{
+//						lblForbindelse.setText("Forbindelse til DB: Oprettet");
+//					}
+//					else
+//					{
+//						lblForbindelse.setText("Forbindelse til DB: Mistet");
+//					}
+//					Thread.sleep(5000);
+//				}
+				return false;
+			}
+
+				};
+	}
 }
