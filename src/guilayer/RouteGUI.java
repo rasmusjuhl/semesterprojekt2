@@ -103,12 +103,12 @@ public class RouteGUI extends JFrame {
 		// Start panel
 		panel = new JPanel();
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel.setBounds(238, 11, 764, 612);
+		panel.setBounds(166, 11, 836, 612);
 		contentPane.add(panel);
 		panel.setLayout(null);	
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 11, 748, 178);
+		scrollPane.setBounds(10, 11, 816, 178);
 		panel.add(scrollPane);
 
 		model = new DefaultTableModel(new Object[][] {},new String[] {"Navn", "Adresse", "Postnr", "By", "Telefon", "Email"});
@@ -128,7 +128,7 @@ public class RouteGUI extends JFrame {
 		table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 						
 		scrollPaneAdded = new JScrollPane();
-		scrollPaneAdded.setBounds(10, 234, 748, 178);
+		scrollPaneAdded.setBounds(10, 234, 816, 178);
 		panel.add(scrollPaneAdded);
 
 		modelAdded = new DefaultTableModel(new Object[][] {},new String[] {"Navn", "Adresse", "Postnr", "By", "Telefon", "Email"});
@@ -174,7 +174,6 @@ public class RouteGUI extends JFrame {
 				addToPanelRoute(createListOfCustomers());
 				Working work = new Working();
 				work.worker.execute();
-//				changePanel();
 			}
 		});
 		btnOpretRute.setBounds(20, 423, 145, 23);
@@ -188,12 +187,12 @@ public class RouteGUI extends JFrame {
 		//Start route panel
 		panelRoute = new JPanel();
 		panelRoute.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panelRoute.setBounds(238, 11, 764, 612);
+		panelRoute.setBounds(166, 11, 836, 612);
 		contentPane.add(panelRoute);
 		panelRoute.setLayout(null);	
 
 		scrollPaneRoute = new JScrollPane();
-		scrollPaneRoute.setBounds(10, 11, 748, 199);
+		scrollPaneRoute.setBounds(10, 11, 816, 199);
 		panelRoute.add(scrollPaneRoute);
 		
 		modelRoute = new DefaultTableModel(new Object[][] {},new String[] {"Nr", "Navn", "Adresse", "Postnr", "By", "Telefon", "Email"});
@@ -339,11 +338,11 @@ public class RouteGUI extends JFrame {
 			@Override
 			protected Boolean doInBackground() throws Exception
 			{
-				progressBar.setMaximum(30);
-				for (int i = 0; i <= 30; i++) 
+				progressBar.setMaximum(10);
+				for (int i = 0; i <= 20; i++) 
 				{
 					progressBar.setValue(i);
-					Thread.sleep(200);					
+					Thread.sleep(100);					
 				}
 				changePanel();
 				return false;
