@@ -2,12 +2,13 @@ package guilayer;
 import ctrlayer.*;
 import modellayer.*;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -103,7 +104,7 @@ public class UserGUI extends JFrame {
 	
 	public void initComponents()
 	{
-		setTitle("Bruger menu - logget ind som " + user.getName());
+//		setTitle("Bruger menu - logget ind som " + user.getName());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1028, 660);
 		contentPane = new JPanel();
@@ -140,7 +141,6 @@ public class UserGUI extends JFrame {
 		});
 		btnRetBruger.setBounds(10, 133, 146, 50);
 		contentPane.add(btnRetBruger);
-		//END Opret kunde panel
 		
 		//START Ret kunde panel
 		panelRet = new JPanel();
@@ -166,7 +166,7 @@ public class UserGUI extends JFrame {
 		scrollPaneRet.setViewportView(tableRet);
 		
 		
-		//START Find kunde components
+		//START Find bruger components
 		panelFind = new JPanel();
 		panelFind.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panelFind.setBounds(166, 11, 836, 600);
@@ -264,6 +264,7 @@ public class UserGUI extends JFrame {
 		btnOpret = new JButton("Opret");
 		btnOpret.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				checkEmail();
 				insertUser();
 			}
 		});
@@ -334,6 +335,50 @@ public class UserGUI extends JFrame {
 		panelOpret.setVisible(false);
 		panelFind.setVisible(false);
 		panelRet.setVisible(true);
+	}
+	
+	private void checkEmail()
+	{
+		String email = txtEmail.getText();
+		String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$";
+
+		Pattern patEmail = Pattern.compile(emailPattern);
+		Matcher m = patEmail.matcher(email);
+		if(m.find()) // check email
+		{
+			checkPhoneNo();	
+		}
+		else
+		{
+			// lbl
+		}		
+	}
+	
+	private void checkPhoneNo()
+	{
+		String phone = txtTelefon.getText();
+		String phonePattern = "^[0-9]{1,8}$";
+
+		Pattern patPhone = Pattern.compile(phonePattern);
+		Matcher p = patPhone.matcher(phone);
+
+		if(p.find()) // check phone
+		{
+			insertUser();	
+			clearFieldsOpret();
+		}
+		else
+		{
+			//lbl
+		}		
+	}
+	
+	private void clearFieldsOpret()
+	{
+		txtNavn.setText("");
+		txtTelefon.setText("");
+		txtEmail.setText("");
+		passwordField.setText("");	
 	}
 	
 	private void insertUser()
