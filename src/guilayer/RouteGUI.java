@@ -18,11 +18,10 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
 import javax.swing.JProgressBar;
+
 
 public class RouteGUI extends JFrame {
 	private CustomerCtr cCtr;
@@ -40,11 +39,11 @@ public class RouteGUI extends JFrame {
 	private JButton btnTilfjDestination;
 	private JPanel panelRoute;
 	private JScrollPane scrollPaneRoute;
-
 	private DefaultTableModel modelRoute;
-
 	private JTable tableRoute;
 	private JProgressBar progressBar;
+	private JButton btnTilbage;
+	private static RouteGUI frame;
 
 	/**
 	 * Launch the application.
@@ -53,7 +52,7 @@ public class RouteGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RouteGUI frame = new RouteGUI();
+					frame = new RouteGUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -191,6 +190,16 @@ public class RouteGUI extends JFrame {
 			}
 		};
 		scrollPaneRoute.setViewportView(tableRoute);
+		
+		btnTilbage = new JButton("Tilbage");
+		btnTilbage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				MainMenuGUI.main(null);
+			}
+		});
+		btnTilbage.setBounds(10, 196, 146, 50);
+		contentPane.add(btnTilbage);
 		
 		tableRoute.getColumnModel().getColumn(0).setPreferredWidth(10);
 		tableRoute.getColumnModel().getColumn(3).setPreferredWidth(10);

@@ -36,6 +36,7 @@ import java.awt.event.FocusEvent;
 
 import javax.swing.JProgressBar;
 
+
 public class CustomerGUI extends JFrame {
 
 	private CustomerCtr cusCtr;
@@ -74,6 +75,8 @@ public class CustomerGUI extends JFrame {
 	private JLabel lblKundeOprettet;
 	private JLabel lblForbindelse;
 	private JProgressBar progressBar;
+	private JButton btnTilbage;
+	private static CustomerGUI frame;
 
 
 	/**
@@ -83,7 +86,7 @@ public class CustomerGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CustomerGUI frame = new CustomerGUI();
+					frame = new CustomerGUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -144,7 +147,7 @@ public class CustomerGUI extends JFrame {
 		btnRetKunde.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				panelRetKunde();
-				FillTableRet ftr = new FillTableRet();
+				FillTableRet ftr = new FillTableRet();  // private class
 				ftr.worker.execute();
 //				findAllCustomers(modelRet);				
 			}
@@ -152,6 +155,16 @@ public class CustomerGUI extends JFrame {
 		btnRetKunde.setBounds(10, 133, 146, 50);
 		contentPane.add(btnRetKunde);
 
+		btnTilbage = new JButton("Tilbage");
+		btnTilbage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.dispose();
+				MainMenuGUI.main(null);	
+			}
+		});
+		btnTilbage.setBounds(10, 194, 146, 50);
+		contentPane.add(btnTilbage);
+		
 
 		//START Find kunde components
 		panelFind = new JPanel();
@@ -359,6 +372,8 @@ public class CustomerGUI extends JFrame {
 		progressBar.setBounds(10, 572, 146, 14);
 		contentPane.add(progressBar);
 		progressBar.setMaximum(50);
+		
+		
 
 		CheckOnline co = new CheckOnline();
 		co.worker.execute();
@@ -404,7 +419,7 @@ public class CustomerGUI extends JFrame {
 
 	public void findAllCustomersFind()
 	{
-		FillTable ft = new FillTable();
+		FillTable ft = new FillTable();  // private class
 		ft.worker.execute();
 	}
 	
