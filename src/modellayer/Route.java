@@ -1,29 +1,32 @@
 package modellayer;
 
-import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class Route {
 	
-	private String date;
+	private Date date;
 	private Customer start;
 	private Customer end;
-	private ArrayList<Edge> edges;
+	private List<Edge> edges;
+	private double routeLength;
 
 	public Route() {
 	}
 
-	public Route(String date, Customer start, Customer end,	ArrayList<Edge> edges) {
-		this.date = date;
+	public Route(Customer start, Customer end, List<Edge> edges, Double routeLength) {
+		this.date = new Date();
 		this.start = start;
 		this.end = end;
 		this.edges = edges;
+		this.routeLength = routeLength;
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
@@ -43,12 +46,20 @@ public class Route {
 		this.end = end;
 	}
 
-	public ArrayList<Edge> getEdges() {
+	public List<Edge> getEdges() {
 		return edges;
 	}
 
-	public void setEdges(ArrayList<Edge> edges) {
+	public void setEdges(List<Edge> edges) {
 		this.edges = edges;
+	}
+
+	public double getRouteLength() {
+		return routeLength;
+	}
+
+	public void setRouteLength(double routeLength) {
+		this.routeLength = routeLength;
 	}
 
 	

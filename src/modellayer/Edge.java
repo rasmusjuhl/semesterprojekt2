@@ -1,6 +1,10 @@
 package modellayer;
 
-public class Edge {
+import org.jgrapht.graph.DefaultWeightedEdge;
+
+public class Edge extends DefaultWeightedEdge{
+	
+	private static final long serialVersionUID = 1L;
 	private Customer pointA;
 	private Customer pointB;
 	private double distance;
