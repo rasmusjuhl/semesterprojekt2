@@ -2,12 +2,13 @@ package guilayer;
 import ctrlayer.*;
 import modellayer.*;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
@@ -54,6 +56,7 @@ public class UserGUI extends JFrame {
 	private static UserGUI frame;
 	private JButton btnTilbage;
 	private User user;
+	private JLabel lblOpret;
 
 
 	/**
@@ -102,7 +105,7 @@ public class UserGUI extends JFrame {
 	
 	public void initComponents()
 	{
-		setTitle("Bruger menu - logget ind som " + user.getName());
+//		setTitle("Bruger menu - logget ind som " + user.getName());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1028, 660);
 		contentPane = new JPanel();
@@ -132,12 +135,13 @@ public class UserGUI extends JFrame {
 		btnRetBruger.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				panelRetBruger();
-				findAllUsers(modelRet);				
+				sletTabel(modelRet);
+				FillTableRet ftr = new FillTableRet();
+				ftr.worker.execute();
 			}
 		});
 		btnRetBruger.setBounds(10, 133, 146, 50);
 		contentPane.add(btnRetBruger);
-		//END Opret kunde panel
 		
 		//START Ret kunde panel
 		panelRet = new JPanel();
@@ -163,7 +167,7 @@ public class UserGUI extends JFrame {
 		scrollPaneRet.setViewportView(tableRet);
 		
 		
-		//START Find kunde components
+		//START Find bruger components
 		panelFind = new JPanel();
 		panelFind.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panelFind.setBounds(166, 11, 836, 600);
@@ -209,7 +213,9 @@ public class UserGUI extends JFrame {
 		JButton btnFindAlle = new JButton("Find alle");
 		btnFindAlle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				findAllUsers(model);
+				sletTabel(model);
+				FillTableAllUsers ftau = new FillTableAllUsers();
+				ftau.worker.execute();
 			}
 		});
 		btnFindAlle.setBounds(120, 36, 89, 23);
@@ -259,7 +265,7 @@ public class UserGUI extends JFrame {
 		btnOpret = new JButton("Opret");
 		btnOpret.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				insertUser();
+				checkEmail();
 			}
 		});
 		btnOpret.setBounds(10, 136, 89, 23);
@@ -273,7 +279,13 @@ public class UserGUI extends JFrame {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(97, 89, 134, 22);
 		panelOpret.add(passwordField);
-		panelOpret.setVisible(false);
+		
+		lblOpret = new JLabel("");
+		lblOpret.setBounds(20, 170, 587, 14);
+		panelOpret.add(lblOpret);
+		lblOpret.setVisible(false);
+		
+		
 		
 		btnRet = new JButton("Ret");
 		btnRet.addActionListener(new ActionListener() {
@@ -329,6 +341,90 @@ public class UserGUI extends JFrame {
 		panelOpret.setVisible(false);
 		panelFind.setVisible(false);
 		panelRet.setVisible(true);
+	}
+	
+	private void checkEmail()
+	{
+		String email = txtEmail.getText();
+		String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}{5,50}$";
+
+		Pattern patEmail = Pattern.compile(emailPattern);
+		Matcher m = patEmail.matcher(email);
+		if(m.find()) // check email
+		{
+			checkPhoneNo();	
+		}
+		else
+		{
+			lblOpret.setText("Bruger blev ikke oprettet. Email skal være i formattet: navn@mail.dk");
+			lblOpret.setVisible(true);
+		}		
+	}
+	
+	private void checkPhoneNo()
+	{
+		String phone = txtTelefon.getText();
+		String phonePattern = "^[0-9]{1,8}$";
+
+		Pattern patPhone = Pattern.compile(phonePattern);
+		Matcher p = patPhone.matcher(phone);
+
+		if(p.find()) // check phone
+		{
+			checkPassword();
+		}
+		else
+		{
+			lblOpret.setText("Bruger blev ikke oprettet. Telefon nr. skal bestå af tal.");
+			lblOpret.setVisible(true);
+		}		
+	}
+	
+	private void checkPassword()
+	{
+		String password = passwordField.getText();
+		String passwordPattern = "^[a-zA-Z0-9]{4,12}$";
+
+		Pattern patPassword = Pattern.compile(passwordPattern);
+		Matcher p = patPassword.matcher(password);
+
+		if(p.find()) // check password
+		{
+			checkName();
+		}
+		else
+		{
+			lblOpret.setText("Password må kun bestå af bogstaver og tal, og skal være mellem 4 og 12 tegn.");
+			lblOpret.setVisible(true);
+		}
+	}
+	
+	private void checkName()
+	{
+		String name = txtNavn.getText();
+		String namePattern = "^[a-zA-Z]{0,50}$";
+
+		Pattern patName = Pattern.compile(namePattern);
+		Matcher n = patName.matcher(name);
+
+		if(n.find())  // check name
+		{
+			insertUser();	
+			clearFieldsOpret();
+		}
+		else
+		{
+			lblOpret.setText("Navn må max bestå af 50 tegn og bestå af bogstaver.");
+			lblOpret.setVisible(true);
+		}
+	}
+	
+	private void clearFieldsOpret()
+	{
+		txtNavn.setText("");
+		txtTelefon.setText("");
+		txtEmail.setText("");
+		passwordField.setText("");	
 	}
 	
 	private void insertUser()
@@ -390,13 +486,55 @@ public class UserGUI extends JFrame {
 	{
 		final JFrame parent = new JFrame();
 		int row = tableRet.getSelectedRow();
-		String slet = "Slet kunde: " + (String) tableRet.getValueAt(row, 0);
+		String slet = "Slet bruger: " + (String) tableRet.getValueAt(row, 0);
 		int valg = JOptionPane.showConfirmDialog(parent, "Er du sikker?", slet, JOptionPane.YES_NO_OPTION);
 		if(valg == 0)
 		{
-			String phone = (String) tableRet.getValueAt(row, 4);
+			String phone = (String) tableRet.getValueAt(row, 1);
 			userCtr.deleteUser(phone);
 			sletTabel(modelRet);
 		}
+	}
+	
+	private class FillTableAllUsers
+	{
+		public SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>()
+				{
+
+			@Override			
+			protected Boolean doInBackground() throws Exception
+			{			
+				ArrayList<User> list = new ArrayList<User>();
+				list = userCtr.findAlleUsers();
+				for(int i = 0; i < list.size(); i++)
+				{
+					model.addRow(new Object[]{list.get(i).getName(), list.get(i).getPhone(), list.get(i).getEmail()});
+				}
+				return false;
+			}
+
+				};
+		
+	}
+	
+	private class FillTableRet
+	{
+		public SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>()
+				{
+
+			@Override			
+			protected Boolean doInBackground() throws Exception
+			{			
+				ArrayList<User> list = new ArrayList<User>();
+				list = userCtr.findAlleUsers();
+				for(int i = 0; i < list.size(); i++)
+				{
+					modelRet.addRow(new Object[]{list.get(i).getName(), list.get(i).getPhone(), list.get(i).getEmail()});
+				}
+				return false;
+			}
+
+				};
+		
 	}
 }
