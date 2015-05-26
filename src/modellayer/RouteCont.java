@@ -2,6 +2,7 @@ package modellayer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * En container til at gemme routes lokalt.
@@ -39,7 +40,7 @@ public class RouteCont {
 		routes.add(r);
 	}
 	
-	public Route findRoute(User user, String date)
+	public Route findRoute(User user, Date date)
 	{
 		Route returnRoute = null;
 		boolean found = false;
@@ -55,7 +56,7 @@ public class RouteCont {
 		return returnRoute;
 	}
 	
-	public void deleteRoute(User user, String date)
+	public void deleteRoute(User user, Date date)
 	{
 		Route tempR = findRoute(user, date);
 		routes.remove(tempR);
