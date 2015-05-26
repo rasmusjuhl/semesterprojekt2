@@ -40,7 +40,6 @@ import javax.swing.JProgressBar;
 public class CustomerGUI extends JFrame {
 
 	private CustomerCtr cusCtr;
-	private static CustomerGUI instance = null;
 
 	private JPanel contentPane;
 	private JTextField txtNavn;
@@ -77,6 +76,7 @@ public class CustomerGUI extends JFrame {
 	private JProgressBar progressBar;
 	private JButton btnTilbage;
 	private static CustomerGUI frame;
+	private User user;
 
 
 	/**
@@ -100,23 +100,27 @@ public class CustomerGUI extends JFrame {
 	 */
 	private CustomerGUI() 
 	{
+		if(user == null)
+		{
+			user = LoginMenu.getInstance().getUser();
+		}
 		cusCtr = new CustomerCtr();
 		initComponents();
 	}
 
 	public static CustomerGUI getInstance()
 	{
-		if(instance == null)
+		if(frame == null)
 		{
-			instance = new CustomerGUI();
+			frame = new CustomerGUI();
 		}
-		return instance;
+		return frame;
 	}
 
 
 	public void initComponents()
 	{
-		setTitle("Customer GUI");
+		setTitle("Kunde menu - logget ind som " + user.getName());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1028, 660);
 		contentPane = new JPanel();
