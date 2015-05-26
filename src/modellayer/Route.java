@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Route {
 	
 	private String date;
+	private User user;
 	private Customer start;
 	private Customer end;
 	private ArrayList<Edge> edges;
@@ -12,11 +13,12 @@ public class Route {
 	public Route() {
 	}
 
-	public Route(String date, Customer start, Customer end,	ArrayList<Edge> edges) {
+	public Route(User user, String date, Customer start, Customer end,	ArrayList<Edge> edges) {
 		this.date = date;
 		this.start = start;
 		this.end = end;
 		this.edges = edges;
+		this.user = user;
 	}
 
 	public String getDate() {
@@ -51,6 +53,14 @@ public class Route {
 		this.edges = edges;
 	}
 
-	
+	public User getUser()
+	{
+		return user;
+	}
+
+	public void setUser(User user)
+	{
+		this.user = user;
+	}
 	
 }
