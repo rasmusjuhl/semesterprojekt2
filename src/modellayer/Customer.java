@@ -6,6 +6,11 @@ public class Customer extends Person{
 	private String zipCode;
 	private Location location;
 	
+	@Override
+	public String toString() {
+		return getName();
+	}
+
 	public Customer() {
 		super();
 	}

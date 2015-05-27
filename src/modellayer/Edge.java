@@ -19,6 +19,18 @@ public class Edge extends DefaultWeightedEdge{
 		this.distance = distance;
 	}
 
+	@Override
+	protected Object getSource() {
+		// TODO Auto-generated method stub
+		return super.getSource();
+	}
+
+	@Override
+	protected Object getTarget() {
+		// TODO Auto-generated method stub
+		return super.getTarget();
+	}
+
 	public Customer getPointA() {
 		return pointA;
 	}
@@ -39,12 +51,19 @@ public class Edge extends DefaultWeightedEdge{
 		return distance;
 	}
 
-	public void setDistance(double distance) {
-		this.distance = distance;
-	}
 	@Override
 	public String toString() {
-		return "(" + pointA.getName() + " : " + pointB.getName() + ")";
+		return getSource().toString() + " : " + getTarget().toString() + " : " + getWeight();
+	}
+
+	@Override
+	protected double getWeight() {
+		// TODO Auto-generated method stub
+		return super.getWeight();
+	}
+
+	public void setDistance(double distance) {
+		this.distance = distance;
 	}
 
 }
