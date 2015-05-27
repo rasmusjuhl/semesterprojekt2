@@ -46,13 +46,14 @@ public class RouteGUI extends JFrame {
 	private JScrollPane scrollPaneRoute;
 	private DefaultTableModel modelRoute;
 	private JTable tableRoute;
-	private JProgressBar progressBar;
 	private JButton btnTilbage;
 	private static RouteGUI frame;
 	private User user;
 //	private RouteCtr rCtr;
 	private Graph<Customer, Edge> g;
 	private DBEdge dbe;
+
+	private JButton btnNyRute;
 
 	/**
 	 * Launch the application.
@@ -180,19 +181,12 @@ public class RouteGUI extends JFrame {
 		btnOpretRute = new JButton("Opret rute");
 		btnOpretRute.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				addToPanelRoute(createListOfCustomers());
 				createRoute();
 				changePanel();
-//				Working work = new Working();
-//				work.worker.execute();
 			}
 		});
 		btnOpretRute.setBounds(20, 423, 145, 23);
 		panel.add(btnOpretRute);
-		
-		progressBar = new JProgressBar();
-		progressBar.setBounds(20, 457, 146, 14);
-		panel.add(progressBar);
 		//Slut panel
 
 		//Start route panel
@@ -217,6 +211,16 @@ public class RouteGUI extends JFrame {
 			}
 		};
 		scrollPaneRoute.setViewportView(tableRoute);
+		
+		btnNyRute = new JButton("Ny rute");
+		btnNyRute.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				sletTabel(modelRoute);
+				changeBackPanel();
+			}
+		});
+		btnNyRute.setBounds(10, 221, 89, 23);
+		panelRoute.add(btnNyRute);
 		
 		btnTilbage = new JButton("Tilbage");
 		btnTilbage.addActionListener(new ActionListener() {
@@ -257,6 +261,11 @@ public class RouteGUI extends JFrame {
 	{
 		panel.setVisible(false);
 		panelRoute.setVisible(true);
+	}
+	private void changeBackPanel()
+	{
+		panelRoute.setVisible(false);
+		panel.setVisible(true);		
 	}
 
 	private void findAllCustomers(DefaultTableModel dmodel)
@@ -353,15 +362,6 @@ public class RouteGUI extends JFrame {
 		
 		route.add((Customer) list.get(0));
 		
-//		if(!route.get(0).equals(e.get(0).getSource()))
-//		{
-//			route.add((Customer) e.get(0).getSource());
-//		}
-//		else if(!route.get(0).equals(e.get(0).getTarget()))
-//		{
-//			route.add((Customer) e.get(0).getTarget());
-//		}
-		
 		for(int i = 0; i < e.size(); i++)
 		{
 			if(!route.get(i).equals(e.get(i).getSource()))
@@ -374,25 +374,5 @@ public class RouteGUI extends JFrame {
 			}			
 		}
 		addToPanelRoute(route);
-	}
-	
-	private class Working 
-	{
-		public SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>()
-				{
-			@Override
-			protected Boolean doInBackground() throws Exception
-			{
-				progressBar.setMaximum(10);
-				for (int i = 0; i <= 20; i++) 
-				{
-					progressBar.setValue(i);
-					Thread.sleep(100);					
-				}
-				changePanel();
-				return false;
-			}
-
-				};
 	}
 }
