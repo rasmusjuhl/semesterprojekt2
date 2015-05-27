@@ -353,25 +353,27 @@ public class RouteGUI extends JFrame {
 	
 	private void createRoute()
 	{
-
 		ArrayList<Customer> list = createListOfCustomers();
 		ArrayList<Customer> route = new ArrayList<Customer>();
-		Route r = RouteCtr.createRoute(user, g, list.get(0), list.get(1));
-		System.out.println(r.getRouteLength());
-		List<Edge> e = r.getEdges();
 		
 		route.add((Customer) list.get(0));
 		
-		for(int i = 0; i < e.size(); i++)
+		for(int i = 0; i < list.size()-1; i++)
 		{
-			if(!route.get(i).equals(e.get(i).getSource()))
+			Route r = RouteCtr.createRoute(user, g, list.get(i), list.get(i+1));
+			
+			List<Edge> e = r.getEdges();
+			for(int j = 0; j < e.size(); j++)
 			{
-				route.add((Customer) e.get(i).getSource());
+				if(!route.get(route.size()-1).equals(e.get(j).getSource()))
+				{
+					route.add((Customer) e.get(j).getSource());
+				}
+				else if(!route.get(route.size()-1).equals(e.get(j).getTarget()))
+				{
+					route.add((Customer) e.get(j).getTarget());
+				}			
 			}
-			else if(!route.get(i).equals(e.get(i).getTarget()))
-			{
-				route.add((Customer) e.get(i).getTarget());
-			}			
 		}
 		addToPanelRoute(route);
 	}
