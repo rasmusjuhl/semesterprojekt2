@@ -5,6 +5,7 @@ import dblayer.*;
 import modellayer.*;
 
 import java.awt.EventQueue;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JProgressBar;
 
 import org.jgrapht.Graph;
+
+import javax.swing.JLabel;
 
 
 public class RouteGUI extends JFrame {
@@ -54,6 +57,8 @@ public class RouteGUI extends JFrame {
 	private DBEdge dbe;
 
 	private JButton btnNyRute;
+
+	private JLabel lblTotalDistance;
 
 	/**
 	 * Launch the application.
@@ -99,7 +104,7 @@ public class RouteGUI extends JFrame {
 
 	public void initComponents()
 	{
-//		setTitle("Rute menu - logget ind som " + user.getName());
+		setTitle("Rute menu - logget ind som " + user.getName());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1028, 660);
 		contentPane = new JPanel();
@@ -221,6 +226,10 @@ public class RouteGUI extends JFrame {
 		});
 		btnNyRute.setBounds(10, 221, 89, 23);
 		panelRoute.add(btnNyRute);
+		
+		lblTotalDistance = new JLabel("Total distance: ");
+		lblTotalDistance.setBounds(109, 225, 175, 14);
+		panelRoute.add(lblTotalDistance);
 		
 		btnTilbage = new JButton("Tilbage");
 		btnTilbage.addActionListener(new ActionListener() {
@@ -353,15 +362,16 @@ public class RouteGUI extends JFrame {
 	
 	private void createRoute()
 	{
+		DecimalFormat df = new DecimalFormat("#.00");
 		ArrayList<Customer> list = createListOfCustomers();
 		ArrayList<Customer> route = new ArrayList<Customer>();
-		
+		double distance = 0;
 		route.add((Customer) list.get(0));
 		
 		for(int i = 0; i < list.size()-1; i++)
 		{
 			Route r = RouteCtr.createRoute(user, g, list.get(i), list.get(i+1));
-			
+			distance += r.getRouteLength();
 			List<Edge> e = r.getEdges();
 			for(int j = 0; j < e.size(); j++)
 			{
@@ -375,6 +385,7 @@ public class RouteGUI extends JFrame {
 				}			
 			}
 		}
+		lblTotalDistance.setText(df.format(distance));
 		addToPanelRoute(route);
 	}
 }
