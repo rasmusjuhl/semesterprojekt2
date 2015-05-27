@@ -20,13 +20,13 @@ public class Edge extends DefaultWeightedEdge{
 	}
 
 	@Override
-	protected Object getSource() {
+	public Object getSource() {
 		// TODO Auto-generated method stub
 		return super.getSource();
 	}
 
 	@Override
-	protected Object getTarget() {
+	public Object getTarget() {
 		// TODO Auto-generated method stub
 		return super.getTarget();
 	}
