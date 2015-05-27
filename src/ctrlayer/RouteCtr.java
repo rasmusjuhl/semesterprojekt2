@@ -1,7 +1,6 @@
 package ctrlayer;
 import java.util.ArrayList;
 
-import dblayer.*;
 import modellayer.*;
 
 import org.jgrapht.Graph;
@@ -12,12 +11,7 @@ import java.util.List;
 
 public class RouteCtr {
 	
-	private static CustomerCtr cCtr;
-	private static DBEdge dbe;
-
 	public RouteCtr() {
-		cCtr = new CustomerCtr();
-		dbe = new DBEdge();
 	}
 	
 	public static Route createRoute(User user, Graph<Customer, Edge> g, Customer start, Customer end) // should take 2 Customers
