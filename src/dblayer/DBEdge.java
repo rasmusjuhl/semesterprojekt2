@@ -20,7 +20,7 @@ public class DBEdge {
 		PreparedStatement find;
 		try
 		{
-			find = con.prepareStatement("SELECT * FROM edges WHERE (fromID = ? OR fromID = ?) AND (toID = ? OR toID = ?)");
+			find = con.prepareStatement("SELECT * FROM edges WHERE (pointA = ? OR pointA = ?) AND (pointB = ? OR pointB = ?)");
 			find.setString(1, a.getPhone());
 			find.setString(2, b.getPhone());
 			find.setString(3, a.getPhone());
@@ -67,8 +67,8 @@ public class DBEdge {
 			while(rs.next())
 			{
 				Edge e = new Edge();
-				String a = rs.getString("fromID");
-				String b = rs.getString("toID");
+				String a = rs.getString("pointA");
+				String b = rs.getString("pointB");
 				
 				e.setPointA(new DBCustomer().findCustomer(a));
 				e.setPointB(new DBCustomer().findCustomer(b));
