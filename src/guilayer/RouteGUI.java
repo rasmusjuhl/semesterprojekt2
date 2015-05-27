@@ -6,6 +6,7 @@ import modellayer.*;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,6 +24,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JProgressBar;
+
+import org.jgrapht.Graph;
 
 
 public class RouteGUI extends JFrame {
@@ -47,6 +50,9 @@ public class RouteGUI extends JFrame {
 	private JButton btnTilbage;
 	private static RouteGUI frame;
 	private User user;
+//	private RouteCtr rCtr;
+	private Graph<Customer, Edge> g;
+	private DBEdge dbe;
 
 	/**
 	 * Launch the application.
@@ -72,7 +78,10 @@ public class RouteGUI extends JFrame {
 		{
 			user = LoginMenu.getInstance().getUser();
 		}
+		dbe = new DBEdge();
 		cCtr = new CustomerCtr();
+		g = RouteCtr.createGraph(cCtr.findAllCustomers(), dbe.findAllEdges());
+//		rCtr = new RouteCtr();
 		initComponents();
 		findAllCustomers(model);
 	}
@@ -89,7 +98,7 @@ public class RouteGUI extends JFrame {
 
 	public void initComponents()
 	{
-		setTitle("Rute menu - logget ind som " + user.getName());
+//		setTitle("Rute menu - logget ind som " + user.getName());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1028, 660);
 		contentPane = new JPanel();
@@ -171,9 +180,11 @@ public class RouteGUI extends JFrame {
 		btnOpretRute = new JButton("Opret rute");
 		btnOpretRute.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				addToPanelRoute(createListOfCustomers());
-				Working work = new Working();
-				work.worker.execute();
+//				addToPanelRoute(createListOfCustomers());
+				createRoute();
+				changePanel();
+//				Working work = new Working();
+//				work.worker.execute();
 			}
 		});
 		btnOpretRute.setBounds(20, 423, 145, 23);
@@ -329,6 +340,40 @@ public class RouteGUI extends JFrame {
 			modelRoute.addRow(new Object[]{Integer.toString(i+1), cusList.get(i).getName(), cusList.get(i).getAddress(), cusList.get(i).getZipCode(),
 					cusList.get(i).getLocation().getCity(), cusList.get(i).getPhone(), cusList.get(i).getEmail()});
 		}
+	}
+	
+	private void createRoute()
+	{
+
+		ArrayList<Customer> list = createListOfCustomers();
+		ArrayList<Customer> route = new ArrayList<Customer>();
+		Route r = RouteCtr.createRoute(user, g, list.get(0), list.get(1));
+		System.out.println(r.getRouteLength());
+		List<Edge> e = r.getEdges();
+		
+		route.add((Customer) list.get(0));
+		
+//		if(!route.get(0).equals(e.get(0).getSource()))
+//		{
+//			route.add((Customer) e.get(0).getSource());
+//		}
+//		else if(!route.get(0).equals(e.get(0).getTarget()))
+//		{
+//			route.add((Customer) e.get(0).getTarget());
+//		}
+		
+		for(int i = 0; i < e.size(); i++)
+		{
+			if(!route.get(i).equals(e.get(i).getSource()))
+			{
+				route.add((Customer) e.get(i).getSource());
+			}
+			else if(!route.get(i).equals(e.get(i).getTarget()))
+			{
+				route.add((Customer) e.get(i).getTarget());
+			}			
+		}
+		addToPanelRoute(route);
 	}
 	
 	private class Working 
