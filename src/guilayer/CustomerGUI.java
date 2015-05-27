@@ -153,7 +153,7 @@ public class CustomerGUI extends JFrame {
 				panelRetKunde();
 				FillTableRet ftr = new FillTableRet();  // private class
 				ftr.worker.execute();
-//				findAllCustomers(modelRet);				
+				//				findAllCustomers(modelRet);				
 			}
 		});
 		btnRetKunde.setBounds(10, 133, 146, 50);
@@ -168,7 +168,7 @@ public class CustomerGUI extends JFrame {
 		});
 		btnTilbage.setBounds(10, 194, 146, 50);
 		contentPane.add(btnTilbage);
-		
+
 
 		//START Find kunde components
 		panelFind = new JPanel();
@@ -364,20 +364,20 @@ public class CustomerGUI extends JFrame {
 		});
 		btnSlet.setBounds(109, 341, 89, 23);
 		panelRet.add(btnSlet);
-		
-		
-		
+
+
+
 		lblForbindelse = new JLabel("");
 		lblForbindelse.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblForbindelse.setBounds(10, 597, 146, 14);
 		contentPane.add(lblForbindelse);
-		
+
 		progressBar = new JProgressBar();
 		progressBar.setBounds(10, 572, 146, 14);
 		contentPane.add(progressBar);
 		progressBar.setMaximum(50);
-		
-		
+
+
 
 		CheckOnline co = new CheckOnline();
 		co.worker.execute();
@@ -416,9 +416,11 @@ public class CustomerGUI extends JFrame {
 	{
 		sletTabel(dmodel);
 		String phone = txtFindTelefon.getText();
-		Customer cus = cusCtr.findByPhoneNo(phone);
-
-		dmodel.addRow(new Object[]{cus.getName(),cus.getAddress(),cus.getZipCode(),cus.getLocation().getCity(),cus.getPhone(),cus.getEmail()});
+		if(!phone.equals(""))
+		{
+			Customer cus = cusCtr.findByPhoneNo(phone);
+			dmodel.addRow(new Object[]{cus.getName(),cus.getAddress(),cus.getZipCode(),cus.getLocation().getCity(),cus.getPhone(),cus.getEmail()});
+		}		
 	}
 
 	public void findAllCustomersFind()
@@ -426,11 +428,11 @@ public class CustomerGUI extends JFrame {
 		FillTable ft = new FillTable();  // private class
 		ft.worker.execute();
 	}
-	
+
 	public void findAllCustomers(DefaultTableModel dmodel)
 	{
 		sletTabel(dmodel);
-		
+
 		ArrayList<Customer> list = new ArrayList<Customer>();
 		list = cusCtr.findAllCustomers();
 		for(int i = 0; i < list.size(); i++)
@@ -452,25 +454,31 @@ public class CustomerGUI extends JFrame {
 	private void updateCustomer()
 	{
 		int row = tableRet.getSelectedRow();
-		String name = (String) tableRet.getValueAt(row, 0);
-		String phone = (String) tableRet.getValueAt(row, 4);
-		String email  = (String) tableRet.getValueAt(row, 5);
-		String address =(String) tableRet.getValueAt(row, 1);
-		String zipCode = (String) tableRet.getValueAt(row, 2);		
-		cusCtr.updateCustomer(name, phone, email, address, zipCode);
+		if(row != -1)
+		{
+			String name = (String) tableRet.getValueAt(row, 0);
+			String phone = (String) tableRet.getValueAt(row, 4);
+			String email  = (String) tableRet.getValueAt(row, 5);
+			String address =(String) tableRet.getValueAt(row, 1);
+			String zipCode = (String) tableRet.getValueAt(row, 2);		
+			cusCtr.updateCustomer(name, phone, email, address, zipCode);
+		}
 	}
 
 	private void deleteCustomer()
 	{
-		final JFrame parent = new JFrame();
 		int row = tableRet.getSelectedRow();
-		String slet = "Slet kunde: " + (String) tableRet.getValueAt(row, 0);
-		int valg = JOptionPane.showConfirmDialog(parent, "Er du sikker?", slet, JOptionPane.YES_NO_OPTION);
-		if(valg == 0)
+		if(row != -1)
 		{
-			String phone = (String) tableRet.getValueAt(row, 4);
-			cusCtr.deleteCustomer(phone);
-			sletTabel(modelRet);
+			final JFrame parent = new JFrame();
+			String slet = "Slet kunde: " + (String) tableRet.getValueAt(row, 0);
+			int valg = JOptionPane.showConfirmDialog(parent, "Er du sikker?", slet, JOptionPane.YES_NO_OPTION);
+			if(valg == 0)
+			{
+				String phone = (String) tableRet.getValueAt(row, 4);
+				cusCtr.deleteCustomer(phone);
+				sletTabel(modelRet);
+			}
 		}
 	}
 
@@ -535,7 +543,7 @@ public class CustomerGUI extends JFrame {
 			lblKundeOprettet.setVisible(true);
 		}
 	}
-	
+
 	private void checkAddress()
 	{
 		String address = txtAdresse.getText();
@@ -554,7 +562,7 @@ public class CustomerGUI extends JFrame {
 			lblKundeOprettet.setVisible(true);
 		}
 	}
-	
+
 	private void checkName()
 	{
 		String name = txtNavn.getText();
@@ -638,14 +646,14 @@ public class CustomerGUI extends JFrame {
 					model.addRow(new Object[]{list.get(i).getName(), list.get(i).getAddress(), list.get(i).getZipCode(),
 							list.get(i).getLocation().getCity(), list.get(i).getPhone(), list.get(i).getEmail()});
 				}
-				
+
 				return false;
 			}
 
 				};
-		
+
 	}
-	
+
 	private class FillTableRet
 	{
 		public SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>()
@@ -662,12 +670,12 @@ public class CustomerGUI extends JFrame {
 					modelRet.addRow(new Object[]{list.get(i).getName(), list.get(i).getAddress(), list.get(i).getZipCode(),
 							list.get(i).getLocation().getCity(), list.get(i).getPhone(), list.get(i).getEmail()});
 				}
-				
+
 				return false;
 			}
 
 				};
-		
+
 	}
 
 	private class CheckOnline 
@@ -686,22 +694,22 @@ public class CustomerGUI extends JFrame {
 						i = 0;
 					}
 					Thread.sleep(100);
-					
+
 				}
-				
-//				while(true)
-//				{
-//					DBConnection dbCon = DBConnection.getInstance();
-//					if(dbCon.getDBcon() != null)
-//					{
-//						lblForbindelse.setText("Forbindelse til DB: Oprettet");
-//					}
-//					else
-//					{
-//						lblForbindelse.setText("Forbindelse til DB: Mistet");
-//					}
-//					Thread.sleep(5000);
-//				}
+
+				//				while(true)
+				//				{
+				//					DBConnection dbCon = DBConnection.getInstance();
+				//					if(dbCon.getDBcon() != null)
+				//					{
+				//						lblForbindelse.setText("Forbindelse til DB: Oprettet");
+				//					}
+				//					else
+				//					{
+				//						lblForbindelse.setText("Forbindelse til DB: Mistet");
+				//					}
+				//					Thread.sleep(5000);
+				//				}
 				return false;
 			}
 
