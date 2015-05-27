@@ -105,7 +105,7 @@ public class UserGUI extends JFrame {
 	
 	public void initComponents()
 	{
-//		setTitle("Bruger menu - logget ind som " + user.getName());
+		setTitle("Bruger menu - logget ind som " + user.getName());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1028, 660);
 		contentPane = new JPanel();
@@ -447,9 +447,11 @@ public class UserGUI extends JFrame {
 	{
 		sletTabel(dmodel);
 		String phone = txtFindTelefon.getText();
-		User user = userCtr.findUser(phone);
-		
-		dmodel.addRow(new Object[]{user.getName(), user.getPhone(), user.getEmail()});
+		if(!phone.equals(""))
+		{
+			User user = userCtr.findUser(phone);
+			dmodel.addRow(new Object[]{user.getName(), user.getPhone(), user.getEmail()});
+		}
 	}
 	
 	public void findAllUsers(DefaultTableModel dmodel)
@@ -476,23 +478,29 @@ public class UserGUI extends JFrame {
 	private void updateUser()
 	{
 		int row = tableRet.getSelectedRow();
-		String name = (String) tableRet.getValueAt(row, 0);
-		String phone = (String) tableRet.getValueAt(row, 1);
-		String email  = (String) tableRet.getValueAt(row, 2);
-		userCtr.updateUser(name, phone, email);
+		if(row != -1)
+		{
+			String name = (String) tableRet.getValueAt(row, 0);
+			String phone = (String) tableRet.getValueAt(row, 1);
+			String email  = (String) tableRet.getValueAt(row, 2);
+			userCtr.updateUser(name, phone, email);
+		}
 	}
 	
 	private void deleteUser()
 	{
-		final JFrame parent = new JFrame();
 		int row = tableRet.getSelectedRow();
-		String slet = "Slet bruger: " + (String) tableRet.getValueAt(row, 0);
-		int valg = JOptionPane.showConfirmDialog(parent, "Er du sikker?", slet, JOptionPane.YES_NO_OPTION);
-		if(valg == 0)
+		if(row != -1)
 		{
-			String phone = (String) tableRet.getValueAt(row, 1);
-			userCtr.deleteUser(phone);
-			sletTabel(modelRet);
+			final JFrame parent = new JFrame();
+			String slet = "Slet bruger: " + (String) tableRet.getValueAt(row, 0);
+			int valg = JOptionPane.showConfirmDialog(parent, "Er du sikker?", slet, JOptionPane.YES_NO_OPTION);
+			if(valg == 0)
+			{
+				String phone = (String) tableRet.getValueAt(row, 1);
+				userCtr.deleteUser(phone);
+				sletTabel(modelRet);
+			}
 		}
 	}
 	
