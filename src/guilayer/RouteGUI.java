@@ -5,7 +5,9 @@ import dblayer.*;
 import modellayer.*;
 
 import java.awt.EventQueue;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,6 +25,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JProgressBar;
+
+import org.jgrapht.Graph;
+
+import javax.swing.JLabel;
 
 
 public class RouteGUI extends JFrame {
@@ -43,10 +49,16 @@ public class RouteGUI extends JFrame {
 	private JScrollPane scrollPaneRoute;
 	private DefaultTableModel modelRoute;
 	private JTable tableRoute;
-	private JProgressBar progressBar;
 	private JButton btnTilbage;
 	private static RouteGUI frame;
 	private User user;
+//	private RouteCtr rCtr;
+	private Graph<Customer, Edge> g;
+	private DBEdge dbe;
+
+	private JButton btnNyRute;
+
+	private JLabel lblTotalDistance;
 
 	/**
 	 * Launch the application.
@@ -72,7 +84,10 @@ public class RouteGUI extends JFrame {
 		{
 			user = LoginMenu.getInstance().getUser();
 		}
+		dbe = new DBEdge();
 		cCtr = new CustomerCtr();
+		g = RouteCtr.createGraph(cCtr.findAllCustomers(), dbe.findAllEdges());
+//		rCtr = new RouteCtr();
 		initComponents();
 		findAllCustomers(model);
 	}
@@ -171,17 +186,12 @@ public class RouteGUI extends JFrame {
 		btnOpretRute = new JButton("Opret rute");
 		btnOpretRute.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				addToPanelRoute(createListOfCustomers());
-				Working work = new Working();
-				work.worker.execute();
+				createRoute();
+				changePanel();
 			}
 		});
 		btnOpretRute.setBounds(20, 423, 145, 23);
 		panel.add(btnOpretRute);
-		
-		progressBar = new JProgressBar();
-		progressBar.setBounds(20, 457, 146, 14);
-		panel.add(progressBar);
 		//Slut panel
 
 		//Start route panel
@@ -206,6 +216,20 @@ public class RouteGUI extends JFrame {
 			}
 		};
 		scrollPaneRoute.setViewportView(tableRoute);
+		
+		btnNyRute = new JButton("Ny rute");
+		btnNyRute.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				sletTabel(modelRoute);
+				changeBackPanel();
+			}
+		});
+		btnNyRute.setBounds(10, 221, 89, 23);
+		panelRoute.add(btnNyRute);
+		
+		lblTotalDistance = new JLabel("Total distance: ");
+		lblTotalDistance.setBounds(109, 225, 175, 14);
+		panelRoute.add(lblTotalDistance);
 		
 		btnTilbage = new JButton("Tilbage");
 		btnTilbage.addActionListener(new ActionListener() {
@@ -246,6 +270,11 @@ public class RouteGUI extends JFrame {
 	{
 		panel.setVisible(false);
 		panelRoute.setVisible(true);
+	}
+	private void changeBackPanel()
+	{
+		panelRoute.setVisible(false);
+		panel.setVisible(true);		
 	}
 
 	private void findAllCustomers(DefaultTableModel dmodel)
@@ -331,23 +360,32 @@ public class RouteGUI extends JFrame {
 		}
 	}
 	
-	private class Working 
+	private void createRoute()
 	{
-		public SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>()
-				{
-			@Override
-			protected Boolean doInBackground() throws Exception
+		DecimalFormat df = new DecimalFormat("#.00");
+		ArrayList<Customer> list = createListOfCustomers();
+		ArrayList<Customer> route = new ArrayList<Customer>();
+		double distance = 0;
+		route.add((Customer) list.get(0));
+		
+		for(int i = 0; i < list.size()-1; i++)
+		{
+			Route r = RouteCtr.createRoute(user, g, list.get(i), list.get(i+1));
+			distance += r.getRouteLength();
+			List<Edge> e = r.getEdges();
+			for(int j = 0; j < e.size(); j++)
 			{
-				progressBar.setMaximum(10);
-				for (int i = 0; i <= 20; i++) 
+				if(!route.get(route.size()-1).equals(e.get(j).getSource()))
 				{
-					progressBar.setValue(i);
-					Thread.sleep(100);					
+					route.add((Customer) e.get(j).getSource());
 				}
-				changePanel();
-				return false;
+				else if(!route.get(route.size()-1).equals(e.get(j).getTarget()))
+				{
+					route.add((Customer) e.get(j).getTarget());
+				}			
 			}
-
-				};
+		}
+		lblTotalDistance.setText(df.format(distance));
+		addToPanelRoute(route);
 	}
 }
