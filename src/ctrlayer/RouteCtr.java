@@ -1,4 +1,5 @@
 package ctrlayer;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import modellayer.*;
@@ -10,6 +11,8 @@ import org.jgrapht.graph.*;
 import java.util.List;
 
 public class RouteCtr {
+	
+	private RouteCont rCon;
 	
 	public RouteCtr() {
 	}
@@ -39,5 +42,17 @@ public class RouteCtr {
 			myGraph.setEdgeWeight(currentEdge, weight);
 		}
 		return myGraph;	
+	}
+	
+	//Saves the route to the route container
+	public void saveRoute() throws IOException
+	{
+		rCon.saveToFile();
+	}
+	
+	//Loads the route container
+	public void loadRoute() throws IOException, ClassNotFoundException
+	{
+		rCon.loadFromFile();
 	}
 }
