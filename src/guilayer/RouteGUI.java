@@ -188,7 +188,6 @@ public class RouteGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				CreateRoute cr = new CreateRoute();
 				cr.worker.execute();
-//				createRoute();
 				changePanel();
 			}
 		});
@@ -362,34 +361,6 @@ public class RouteGUI extends JFrame {
 		}
 	}
 	
-	private void createRoute()
-	{
-		DecimalFormat df = new DecimalFormat("#.00");
-		ArrayList<Customer> list = createListOfCustomers();
-		ArrayList<Customer> route = new ArrayList<Customer>();
-		double distance = 0;
-		route.add((Customer) list.get(0));
-		
-		for(int i = 0; i < list.size()-1; i++)
-		{
-			Route r = RouteCtr.createRoute(user, g, list.get(i), list.get(i+1));
-			distance += r.getRouteLength();
-			List<Edge> e = r.getEdges();
-			for(int j = 0; j < e.size(); j++)
-			{
-				if(!route.get(route.size()-1).equals(e.get(j).getSource()))
-				{
-					route.add((Customer) e.get(j).getSource());
-				}
-				else if(!route.get(route.size()-1).equals(e.get(j).getTarget()))
-				{
-					route.add((Customer) e.get(j).getTarget());
-				}			
-			}
-		}
-		lblTotalDistance.setText(df.format(distance));
-		addToPanelRoute(route);
-	}
 	private class CreateRoute
 	{
 		public SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>()
