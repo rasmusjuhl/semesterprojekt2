@@ -19,7 +19,7 @@ public class DBLocationTest {
 		}
 		else
 		{
-			fail("Not yet implenented");
+			fail("fail");
 		}
 	}
 }
