@@ -10,60 +10,59 @@ import org.junit.Test;
 
 public class DBCustomerTest {
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	@Before
-	public void setUp() throws Exception {
-//		DBCustomer dbCus = new DBCustomer();
-//		Customer cus = new Customer("Hans Hansen", "123", "hans@hansen.dk", "Sofiendalsvej 60", "9000");
-//		dbCus.insertCustomer(cus);
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		
-	}
-
 	@Test
-	public void testInsertCustomer() {
+	public void testInsertCustomer() throws Exception {
 		DBCustomer dbCus = new DBCustomer();
 		Customer cus = new Customer("Hans Hansen", "123", "hans@hansen.dk", "Sofiendalsvej 60", "9000");
-		try {
 			if(dbCus.insertCustomer(cus) == 1)
 			{
-				System.out.println("succes");
+				System.out.println("insert customer succes");
 			}
 			else
 			{
 				fail("fail");
 			}
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			dbCus.deleteCustomer("123");
 	}
 
 	@Test
 	public void testFindCustomer() {
-		fail("Not yet implemented");
+		DBCustomer dbCus = new DBCustomer();
+			if(dbCus.findCustomer("1") != null)
+			{
+				System.out.println("find customer succes");
+			}
+			else
+			{
+				fail("fail");
+			}
+	}
+	
+	@Test
+	public void testFindAllCustomer() {
+		DBCustomer dbCus = new DBCustomer();
+			if(dbCus.getAllCustomers().size() == 12)
+			{
+				System.out.println("findall customers succes");
+			}
+			else
+			{
+				fail("fail");
+			}
 	}
 
 	@Test
-	public void testUpdateCustomer() {
-		fail("Not yet implemented");
+	public void testDeleteCustomer() throws Exception {
+		DBCustomer dbCus = new DBCustomer();
+		Customer cus = new Customer("Hans Hansen", "123", "hans@hansen.dk", "Sofiendalsvej 60", "9000");
+		dbCus.insertCustomer(cus);
+			if(dbCus.deleteCustomer("123") == 1)
+			{
+				System.out.println("delete customer succes");
+			}
+			else
+			{
+				fail("fail");
+			}
 	}
-
-	@Test
-	public void testDeleteCustomer() {
-		fail("Not yet implemented");
-	}
-
 }
