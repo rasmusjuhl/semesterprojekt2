@@ -10,27 +10,6 @@ import org.junit.Test;
 
 public class DBCustomerTest {
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	@Before
-	public void setUp() throws Exception {
-//		DBCustomer dbCus = new DBCustomer();
-//		Customer cus = new Customer("Hans Hansen", "123", "hans@hansen.dk", "Sofiendalsvej 60", "9000");
-//		dbCus.insertCustomer(cus);
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		
-	}
-
 	@Test
 	public void testInsertCustomer() {
 		DBCustomer dbCus = new DBCustomer();
