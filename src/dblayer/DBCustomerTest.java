@@ -23,7 +23,6 @@ public class DBCustomerTest {
 				fail("fail");
 			}
 			dbCus.deleteCustomer("123");
-			
 	}
 
 	@Test
@@ -37,7 +36,19 @@ public class DBCustomerTest {
 			{
 				fail("fail");
 			}
-			
+	}
+	
+	@Test
+	public void testFindAllCustomer() {
+		DBCustomer dbCus = new DBCustomer();
+			if(dbCus.getAllCustomers().size() == 12)
+			{
+				System.out.println("findall customers succes");
+			}
+			else
+			{
+				fail("fail");
+			}
 	}
 
 	@Test
@@ -54,5 +65,4 @@ public class DBCustomerTest {
 				fail("fail");
 			}
 	}
-
 }
