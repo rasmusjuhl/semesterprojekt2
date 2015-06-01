@@ -1,13 +1,10 @@
 package ctrlayer;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import modellayer.*;
-
 import org.jgrapht.Graph;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.*;
-
 import java.util.List;
 
 public class RouteCtr {
