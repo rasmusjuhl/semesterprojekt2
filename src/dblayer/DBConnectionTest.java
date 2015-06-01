@@ -12,7 +12,7 @@ public class DBConnectionTest {
 	public void test() 
 	{
 		DBConnection dbCon = DBConnection.getInstance();
-		if(dbCon != null)
+		if(dbCon.getDBcon() != null)
 		{
 			System.out.println("Connection to the DB is ok");
 		}

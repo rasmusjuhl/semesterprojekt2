@@ -12,6 +12,7 @@ public class RouteCtr {
 	private RouteCont rCon;
 	
 	public RouteCtr() {
+		rCon = RouteCont.getInstance();
 	}
 	
 	//Creates a route based on the logged in user, a graph, and a start and an end point.
