@@ -24,7 +24,7 @@ public class RouteCtrTest {
 		ListenableUndirectedWeightedGraph<Customer, Edge> myGraph = RouteCtr.createGraph(custList, edgeList);
 		Route route = RouteCtr.createRoute(user, myGraph, custList.get(0), custList.get(1));
 		if(route.getRouteLength() == Double.POSITIVE_INFINITY)
-			fail("Ruten er ugyldig!");
+			fail("The route is invalid!");
 		else
 			System.out.println("Success! The route is valid!");
 	}
