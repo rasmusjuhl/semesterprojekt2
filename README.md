@@ -1,3 +1,5 @@
 Repository for a graphing problem project.
-
-This readme is mainly here to stop github annoying me to make one.
+For at køre programmet skal LoginMenu klassen køres.
+Login detaljer: 
+Telefon: 201
+Password: 201
