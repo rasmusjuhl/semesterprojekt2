@@ -14,7 +14,7 @@ public class DBCustomer {
 	}
 
 	/**
-	 * Metode til at insætte en customer i DB
+	 * Metode til at indsÃ¦tte en customer i DB
 	 * @param cus
 	 * @return rc
 	 * @throws Exception
