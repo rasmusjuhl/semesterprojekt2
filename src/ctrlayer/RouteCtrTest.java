@@ -23,12 +23,9 @@ public class RouteCtrTest {
 		List<Edge> edgeList = dbEdge.findAllEdges();
 		ListenableUndirectedWeightedGraph<Customer, Edge> myGraph = RouteCtr.createGraph(custList, edgeList);
 		Route route = RouteCtr.createRoute(user, myGraph, custList.get(0), custList.get(1));
-		if(route.getRouteLength() == Double.POSITIVE_INFINITY){
-		fail("Ruten er ugyldig!");
-		}
-		else{
+		if(route.getRouteLength() == Double.POSITIVE_INFINITY)
+			fail("Ruten er ugyldig!");
+		else
 			System.out.println("Success! The route is valid!");
-		}
 	}
-
 }
