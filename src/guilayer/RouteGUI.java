@@ -228,8 +228,8 @@ public class RouteGUI extends JFrame {
 		btnNyRute.setBounds(10, 221, 89, 23);
 		panelRoute.add(btnNyRute);
 		
-		lblTotalDistance = new JLabel("Total distance: ");
-		lblTotalDistance.setBounds(109, 225, 175, 14);
+		lblTotalDistance = new JLabel();
+		lblTotalDistance.setBounds(109, 225, 717, 14);
 		panelRoute.add(lblTotalDistance);
 		
 		btnTilbage = new JButton("Tilbage");
@@ -239,7 +239,7 @@ public class RouteGUI extends JFrame {
 				MainMenuGUI.main(null);
 			}
 		});
-		btnTilbage.setBounds(10, 196, 146, 50);
+		btnTilbage.setBounds(10, 11, 146, 50);
 		contentPane.add(btnTilbage);
 		
 		tableRoute.getColumnModel().getColumn(0).setPreferredWidth(10);
@@ -392,7 +392,7 @@ public class RouteGUI extends JFrame {
 						}			
 					}
 				}
-				lblTotalDistance.setText(df.format(distance));
+				lblTotalDistance.setText("Rutens længde: " + df.format(distance) + " meter");
 				addToPanelRoute(route);
 
 				return false;

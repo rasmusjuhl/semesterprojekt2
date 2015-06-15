@@ -125,6 +125,7 @@ public class UserGUI extends JFrame {
 		btnFindBruger = new JButton("Find bruger");
 		btnFindBruger.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				sletTabel(model);
 				panelFindBruger();
 			}
 		});
@@ -134,8 +135,8 @@ public class UserGUI extends JFrame {
 		btnRetBruger = new JButton("Ret/slet bruger");
 		btnRetBruger.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				panelRetBruger();
 				sletTabel(modelRet);
+				panelRetBruger();				
 				FillTableRet ftr = new FillTableRet();
 				ftr.worker.execute();
 			}
@@ -383,7 +384,7 @@ public class UserGUI extends JFrame {
 	private void checkPassword()
 	{
 		String password = passwordField.getText();
-		String passwordPattern = "^[a-zA-Z0-9]{4,12}$";
+		String passwordPattern = "^[a-zA-ZæøåÆØÅ0-9]{1,12}$";
 
 		Pattern patPassword = Pattern.compile(passwordPattern);
 		Matcher p = patPassword.matcher(password);
@@ -394,7 +395,7 @@ public class UserGUI extends JFrame {
 		}
 		else
 		{
-			lblOpret.setText("Password må kun bestå af bogstaver og tal, og skal være mellem 4 og 12 tegn.");
+			lblOpret.setText("Password må kun bestå af bogstaver og tal, og skal være mellem 1 og 12 tegn.");
 			lblOpret.setVisible(true);
 		}
 	}
@@ -402,7 +403,7 @@ public class UserGUI extends JFrame {
 	private void checkName()
 	{
 		String name = txtNavn.getText();
-		String namePattern = "^[a-zA-Z]{0,50}$";
+		String namePattern = "^[a-zA-ZæøåÆØÅ ]{0,50}$";
 
 		Pattern patName = Pattern.compile(namePattern);
 		Matcher n = patName.matcher(name);

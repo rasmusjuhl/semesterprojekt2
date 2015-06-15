@@ -141,6 +141,7 @@ public class CustomerGUI extends JFrame {
 		btnFindKunde = new JButton("Find kunde");
 		btnFindKunde.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				sletTabel(model);
 				panelFindKunde();
 			}
 		});
@@ -150,6 +151,7 @@ public class CustomerGUI extends JFrame {
 		btnRetKunde = new JButton("Ret/slet kunde");
 		btnRetKunde.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				sletTabel(modelRet);
 				panelRetKunde();
 				FillTableRet ftr = new FillTableRet();  // private class
 				ftr.worker.execute();
@@ -547,7 +549,7 @@ public class CustomerGUI extends JFrame {
 	private void checkAddress()
 	{
 		String address = txtAdresse.getText();
-		String adrPattern = "^[a-zA-Z0-9]{0,50}$";
+		String adrPattern = "^[a-zA-ZæøåÆØÅ0-9 ]{1,50}$";
 
 		Pattern patAdr = Pattern.compile(adrPattern);
 		Matcher a = patAdr.matcher(address);
@@ -566,7 +568,7 @@ public class CustomerGUI extends JFrame {
 	private void checkName()
 	{
 		String name = txtNavn.getText();
-		String namePattern = "^[a-zA-Z]{0,50}$";
+		String namePattern = "^[a-zA-ZæøåÆØÅ ]{1,50}$";
 
 		Pattern patName = Pattern.compile(namePattern);
 		Matcher n = patName.matcher(name);
